@@ -1,0 +1,11 @@
+<% if (Errors.length > 0) { %>
+    <% Errors.forEach(Message => { %>
+        <h5> <%= Message %> </h5>
+    <% }); %>
+<% } %>
+
+<form action="/Authentication/Login" method="POST">
+    <input type="email" name="Email" id="Email" placeholder="Email">
+    <input type="password" name="Password" id="Password" placeholder="Password">
+    <input type="submit">
+</form>
