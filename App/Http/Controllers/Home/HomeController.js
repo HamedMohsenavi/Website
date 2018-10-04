@@ -5,7 +5,7 @@ class HomeController extends Controller
 {
     Index(Request, Response)
     {
-        Response.json('Home Controller');
+        Response.render('Home', { Title: 'Home Page' });
     }
 }
 

@@ -49,6 +49,7 @@ App.set('views', './Resource/Views');
 
 // Express Ejs Layout Configuration
 App.use(expressLayouts);
+App.set('layout', 'Home/Layout');
 App.set('layout extractScripts', true);
 App.set('layout extractStyles', true);
 

@@ -5,7 +5,7 @@ class AdminController extends Controller
 {
     Index(Request, Response)
     {
-        Response.json('Admin Controller');
+        Response.render('Admin', { Title: 'Admin Page' });
     }
 }
 
