@@ -18,6 +18,9 @@ const methodOverride = require('method-override');
 require('app-module-path').addPath(__dirname);
 require('dotenv').config();
 
+// Helpers
+global.Bind = require('./App/Helpers/Bind');
+
 const App = express();
 
 // Establish Mongoose Connection
@@ -80,6 +83,10 @@ App.use(flash());
 // Passport Configuration
 App.use(passport.initialize());
 App.use(passport.session());
+
+// Set Routes
+App.use(require('./App/Routes/Api'));
+App.use(require('./App/Routes/Web'));
 
 // Create HTTP Server
 http.createServer(App).listen(process.env.WEBSITE_PORT, () =>
