@@ -40,6 +40,9 @@ error =>
         return console.log(`DBError ${error}`);
 });
 
+// Initial Passport
+require('App/Passport/Passport-Local');
+
 // Static Files
 App.use(express.static('./Public'));
 

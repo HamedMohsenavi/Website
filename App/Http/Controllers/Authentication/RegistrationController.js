@@ -1,3 +1,6 @@
+// Node Modules
+const passport = require('passport');
+
 // Controllers
 const Controller = require('App/Http/Controllers/Controller');
 
@@ -15,9 +18,19 @@ class RegistrationController extends Controller
         let Result = await this.ValidateData(Request);
 
         if (Result)
-            return Response.json('Registration');
+            return this.Register(Request, Response, Next);
 
         return Response.redirect('/Authentication/Registration');
+    }
+
+    Register(Request, Response, Next)
+    {
+        passport.authenticate('Registration',
+        {
+            successRedirect: '/',
+            failureRedirect: '/Authentication/Registration',
+            failureFlash: true
+        })(Request, Response, Next);
     }
 }
 
