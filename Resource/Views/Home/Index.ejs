@@ -1,1 +1,10 @@
 <h1>Home Page</h1>
+<hr>
+
+<% if (Request.isAuthenticated()) { %>
+    <a href="/Logout">Logout</a>
+    <a href="/Settings">Settings</a>
+<% } else { %>
+    <a href="/Authentication/Login">Login</a>
+    <a href="/Authentication/Registration">Registration</a>
+<% } %>

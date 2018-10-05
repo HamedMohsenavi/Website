@@ -50,7 +50,6 @@
     "passport-local": "^1.0.0",
     "sharp": "^0.20.8",
     "sprintf-js": "^1.1.1",
-    "unique-string": "^1.0.0",
     "validator": "^10.7.1",
     "winston": "^3.1.0"
   },

@@ -1,6 +1,9 @@
 // Node Modules
 const Router = require('express').Router();
 
+// Middleware
+const Redirect = require('App/Http/Middleware/Redirect');
+
 // Home Routers
 Router.use('/', require('./Home'));
 
@@ -8,6 +11,6 @@ Router.use('/', require('./Home'));
 Router.use('/Admin', require('./Admin'));
 
 // Authentication Routers
-Router.use('/Authentication', require('./Authentication'));
+Router.use('/Authentication', Redirect.IsAuthenticated, require('./Authentication'));
 
 module.exports = Router;

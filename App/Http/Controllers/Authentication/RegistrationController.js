@@ -8,7 +8,7 @@ class RegistrationController extends Controller
 {
     Index(Request, Response)
     {
-        Response.render('Home/Authentication/Registration', { Recaptcha: this.Recaptcha.render(), Title: 'Registration Page', Errors: Request.flash('Errors') });
+        Response.render('Home/Authentication/Registration', { Recaptcha: this.Recaptcha.render(), Title: 'Registration Page' });
     }
 
     async Process(Request, Response, Next)

@@ -19,8 +19,12 @@ require('app-module-path').addPath(__dirname);
 require('dotenv').config();
 
 // Helpers
+const Helper = require('./App/Helpers/Helper');
 global.Bind = require('./App/Helpers/Bind');
 global.Logger = require('App/Helpers/Logger');
+
+// Middleware
+const Remember = require('./App/Http/Middleware/Remember');
 
 // Handle Errors
 process.on('uncaughtException', Error => Logger.Analyze('AppUncaughtException', Error));
@@ -85,7 +89,7 @@ App.use(session(
 }));
 
 // Cookie Parser Configuration
-App.use(cookieParser(process.env.COOKIE_SECRET_KE));
+App.use(cookieParser(process.env.COOKIE_SECRET_KEY));
 
 // Flash Connect Configuration
 App.use(flash());
@@ -93,6 +97,17 @@ App.use(flash());
 // Passport Configuration
 App.use(passport.initialize());
 App.use(passport.session());
+
+// Remember Middleware
+App.use(Remember.Handle);
+
+// Express Locals
+App.use((Request, Response, Next) =>
+{
+    App.locals = new Helper(Request).GetObjects();
+
+    Next();
+});
 
 // Set Routes
 App.use(require('./App/Routes/Api'));

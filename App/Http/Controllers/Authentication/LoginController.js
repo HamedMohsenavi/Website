@@ -8,7 +8,7 @@ class LoginController extends Controller
 {
     Index(Request, Response)
     {
-        Response.render('Home/Authentication/Login', { Recaptcha: this.Recaptcha.render(), Title: 'Login Page', Errors: Request.flash('Errors') });
+        Response.render('Home/Authentication/Login', { Recaptcha: this.Recaptcha.render(), Title: 'Login Page' });
     }
 
     async Process(Request, Response, Next)
@@ -25,11 +25,18 @@ class LoginController extends Controller
 
     Login(Request, Response, Next)
     {
-        passport.authenticate('Login',
+        passport.authenticate('Login', (Error, _Account) =>
         {
-            successRedirect: '/',
-            failureRedirect: '/Authentication/Login',
-            failureFlash: true
+            if (!_Account)
+                return Response.redirect('/Authentication/Login');
+
+            Request.login(_Account, Error =>
+            {
+                if (Request.body.Remember)
+                    _Account.SetRemember(Response);
+
+                return Response.redirect('/');
+            });
         })(Request, Response, Next);
     }
 }
