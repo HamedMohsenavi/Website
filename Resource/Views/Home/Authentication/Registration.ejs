@@ -5,8 +5,9 @@
 <% } %>
 
 <form action="/Authentication/Registration" method="POST">
-    <input type="text" name="Name" id="Name" placeholder="Name">
-    <input type="email" name="Email" id="Email" placeholder="Email">
+    <input type="text" name="Name" id="Name" placeholder="Name"> <br>
+    <input type="email" name="Email" id="Email" placeholder="Email"> <br>
     <input type="password" name="Password" id="Password" placeholder="Password">
+    <%- Recaptcha %>
     <button type="submit">Register</button>
 </form>
