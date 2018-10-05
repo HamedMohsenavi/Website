@@ -22,4 +22,9 @@ Account.pre('save', function(Next)
     });
 });
 
+Account.methods.ComparePassword = function(Password)
+{
+    return bcrypt.compareSync(Password, this.Password);
+};
+
 module.exports = mongoose.model('account', Account);

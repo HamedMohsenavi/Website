@@ -6,7 +6,7 @@ class AuthenticationValidator
     Login()
     {
         return [
-            check('Email').isEmail().withMessage('Please enter a valid email address.')
+            check('Email').isEmail().withMessage('The information entered is not correct')
         ];
     }
 

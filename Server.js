@@ -80,6 +80,7 @@ App.use(session(
     secret: process.env.SESSION_SECRET_KEY,
     resave: true,
     saveUninitialized: true,
+    cookie: { expires: new Date(Date.now() + 1000 * 60 * 60 * 6) },
     store: new MongoStore({ mongooseConnection: mongoose.connection })
 }));
 

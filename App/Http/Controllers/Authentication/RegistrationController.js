@@ -27,7 +27,7 @@ class RegistrationController extends Controller
     {
         passport.authenticate('Registration',
         {
-            successRedirect: '/',
+            successRedirect: '/Authentication/Login',
             failureRedirect: '/Authentication/Registration',
             failureFlash: true
         })(Request, Response, Next);
