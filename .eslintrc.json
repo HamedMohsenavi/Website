@@ -1,6 +1,6 @@
 {
     "extends": "standard",
-    "globals": { "Bind": true },
+    "globals": { "Bind": true, "Logger": true },
     "rules":
     {
         "semi": [2, "always"],

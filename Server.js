@@ -20,6 +20,11 @@ require('dotenv').config();
 
 // Helpers
 global.Bind = require('./App/Helpers/Bind');
+global.Logger = require('App/Helpers/Logger');
+
+// Handle Errors
+process.on('uncaughtException', Error => Logger.Analyze('AppUncaughtException', Error));
+process.on('unhandledRejection', Error => Logger.Analyze('AppUnhandledRejection', Error));
 
 const App = express();
 
@@ -34,10 +39,10 @@ mongoose.connect(`mongodb://${process.env.DATABASE_USE_CREDENTIALS ? `${process.
     reconnectInterval: 2500,
     useNewUrlParser: true
 },
-error =>
+Error =>
 {
-    if (error)
-        return console.log(`DBError ${error}`);
+    if (Error)
+        return Logger.Analyze('DBError', Error);
 });
 
 // Initial Passport

@@ -15,7 +15,7 @@ Account.pre('save', function(Next)
     bcrypt.hash(this.Password, bcrypt.genSaltSync(15), (Error, Hash) =>
     {
         if (Error)
-            console.log(Error);
+            return Logger.Analyze('DBError', Error);
 
         this.Password = Hash;
         Next();
