@@ -19,9 +19,9 @@ class Controller
     {
         return new Promise((resolve) =>
         {
-            this.Recaptcha.verify(Request, (error) =>
+            this.Recaptcha.verify(Request, (Error) =>
             {
-                if (error)
+                if (Error)
                 {
                     Request.flash('Errors', 'Incorrect Captcha. Try again.');
                     return Response.redirect('back');
@@ -41,7 +41,7 @@ class Controller
             const Errors = Result.array();
             const Messages = [];
 
-            Errors.forEach(error => Messages.push(error.msg));
+            Errors.forEach(Error => Messages.push(Error.msg));
 
             Request.flash('Errors', Messages);
 
