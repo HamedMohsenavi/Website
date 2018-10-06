@@ -1,3 +1,6 @@
+// Node Native
+const path = require('path');
+
 class Helper
 {
     constructor(Request)
@@ -10,8 +13,14 @@ class Helper
     {
         return {
             Errors: this.Request.flash('Errors'),
-            Request: this.Request
+            Request: this.Request,
+            ViewPath: this.ViewPath
         };
+    }
+
+    ViewPath(Directory)
+    {
+        return path.resolve(`./Resource/Views/${Directory}`);
     }
 }
 

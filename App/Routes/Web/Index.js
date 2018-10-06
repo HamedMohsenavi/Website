@@ -8,7 +8,7 @@ const Redirect = require('App/Http/Middleware/Redirect');
 Router.use('/', require('./Home'));
 
 // Admin Routers
-Router.use('/Admin', require('./Admin'));
+Router.use('/Admin', Redirect.IsAdmin, require('./Admin'));
 
 // Authentication Routers
 Router.use('/Authentication', Redirect.IsAuthenticated, require('./Authentication'));

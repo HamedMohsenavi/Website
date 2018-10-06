@@ -7,6 +7,14 @@ class Redirect
 
         Next();
     }
+
+    IsAdmin(Request, Response, Next)
+    {
+        if (Request.isAuthenticated() && Request.user.Admin)
+            return Next();
+
+        Response.redirect('/');
+    }
 }
 
 module.exports = new Redirect();
