@@ -1,8 +1,4 @@
-<% if (Errors.length > 0) { %>
-    <% Errors.forEach(Message => { %>
-        <h5> <%= Message %> </h5>
-    <% }); %>
-<% } %>
+<%- include('../../Errors') %>
 
 <form action="/Authentication/Login" method="POST">
     <input type="email" name="Email" id="Email" placeholder="Email"> <br>
@@ -11,4 +7,5 @@
     <%- Recaptcha %>
     <button type="submit">Login</button>
     <a href="/Authentication/Google">Google</a>
+    <a href="/Authentication/Reset/Password">Reset Password</a>
 </form>

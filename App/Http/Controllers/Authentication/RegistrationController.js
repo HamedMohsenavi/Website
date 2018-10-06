@@ -20,7 +20,7 @@ class RegistrationController extends Controller
         if (Result)
             return this.Register(Request, Response, Next);
 
-        return Response.redirect('/Authentication/Registration');
+        return Response.redirect('back');
     }
 
     Register(Request, Response, Next)

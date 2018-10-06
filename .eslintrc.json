@@ -3,6 +3,7 @@
     "globals": { "Bind": true, "Logger": true },
     "rules":
     {
+        "no-new": 0,
         "semi": [2, "always"],
         "indent": [ "error", 4, { "CallExpression": { "arguments": 0 }, "SwitchCase": 1 } ],
         "brace-style": [ "error", "allman" ],

@@ -20,7 +20,7 @@ class LoginController extends Controller
         if (Result)
             return this.Login(Request, Response, Next);
 
-        return Response.redirect('/Authentication/Login');
+        return Response.redirect('back');
     }
 
     Login(Request, Response, Next)
@@ -28,7 +28,7 @@ class LoginController extends Controller
         passport.authenticate('Login', (Error, _Account) =>
         {
             if (!_Account)
-                return Response.redirect('/Authentication/Login');
+                return Response.redirect('back');
 
             Request.login(_Account, Error =>
             {

@@ -16,14 +16,14 @@ const Account = mongoose.Schema(
 
 Account.pre('save', function(Next)
 {
-    bcrypt.hash(this.Password, bcrypt.genSaltSync(15), (Error, Hash) =>
-    {
-        if (Error)
-            return Logger.Analyze('DBError', Error);
+    this.Password = bcrypt.hashSync(this.Password, bcrypt.genSaltSync(15));
+    Next();
+});
 
-        this.Password = Hash;
-        Next();
-    });
+Account.pre('findOneAndUpdate', function(Next)
+{
+    this.getUpdate().$set.Password = bcrypt.hashSync(this.getUpdate().$set.Password, bcrypt.genSaltSync(15));
+    Next();
 });
 
 Account.methods.ComparePassword = function(Password)
@@ -44,4 +44,4 @@ Account.methods.SetRemember = function(Response)
     });
 };
 
-module.exports = mongoose.model('account', Account);
+module.exports = mongoose.model('Account', Account);
