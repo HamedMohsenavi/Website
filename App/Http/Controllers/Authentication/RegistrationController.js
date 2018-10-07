@@ -20,6 +20,7 @@ class RegistrationController extends Controller
         if (Result)
             return this.Register(Request, Response, Next);
 
+        Request.flash('GetFormData', Request.body);
         return Response.redirect('back');
     }
 

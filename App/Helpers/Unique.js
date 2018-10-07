@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 
-module.exports.String = (Length) =>
+module.exports.String = Length =>
 {
     if (!Number.isFinite(Length))
         throw new TypeError('Expected a finite number');

@@ -7,6 +7,7 @@ class Helper
     {
         Bind(this);
         this.Request = Request;
+        this.FormData = Request.flash('GetFormData')[0];
     }
 
     GetObjects()
@@ -14,13 +15,19 @@ class Helper
         return {
             Errors: this.Request.flash('Errors'),
             Request: this.Request,
-            ViewPath: this.ViewPath
+            ViewPath: this.ViewPath,
+            GetFormData: this.GetFormData
         };
     }
 
     ViewPath(Directory)
     {
         return path.resolve(`./Resource/Views/${Directory}`);
+    }
+
+    GetFormData(Field, Default = '')
+    {
+        return this.FormData && this.FormData.hasOwnProperty(Field) ? this.FormData[Field] : Default;
     }
 }
 

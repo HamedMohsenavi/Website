@@ -24,6 +24,7 @@ class Controller
                 if (Error)
                 {
                     Request.flash('Errors', 'Incorrect Captcha. Try again.');
+                    Request.flash('GetFormData', Request.body);
                     return Response.redirect('back');
                 }
 
