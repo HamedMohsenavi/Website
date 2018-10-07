@@ -1,3 +1,6 @@
+// Node Native
+const path = require('path');
+
 // Node Modules
 const { check } = require('express-validator/check');
 
@@ -31,6 +34,16 @@ class AdminValidator
                 }
             }),
             check('Description').isLength({ min: 20 }).withMessage('Write 20 characters or more for the description'),
+            check('Image').custom(async value =>
+            {
+                if (!value)
+                    throw new Error('Please select a image file');
+
+                let Extensions = ['.png', '.jpg', '.jpeg', '.svg'];
+
+                if (!Extensions.includes(path.extname(value.toLowerCase())))
+                    throw new Error('Please select a valid image file');
+            }),
             check('Price').isNumeric().withMessage('Please enter a valid price'),
             check('Tags').not().isEmpty().withMessage('Please enter a valid tag')
         ];

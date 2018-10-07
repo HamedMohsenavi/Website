@@ -1,3 +1,6 @@
+// Node Native
+const fs = require('fs');
+
 // Controllers
 const Controller = require('App/Http/Controllers/Controller');
 
@@ -22,6 +25,9 @@ class CourseController extends Controller
 
         if (!Result)
         {
+            if (Request.file)
+                fs.unlinkSync(Request.file.path);
+
             Request.flash('GetFormData', Request.body);
             return Response.redirect('back');
         }

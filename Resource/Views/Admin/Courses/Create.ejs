@@ -1,6 +1,6 @@
 <%- include(ViewPath('Errors')) %>
 
-<form action="/Admin/Courses/Create" method="POST">
+<form action="/Admin/Courses/Create" method="POST" enctype="multipart/form-data">
     <input type="text" name="Title" id="Title" placeholder="Title" value="<%= GetFormData('Title') %>"> <br>
     <input type="text" name="Slug" id="Slug" placeholder="Slug" value="<%= GetFormData('Slug') %>"> <br>
     <select name="Type" id="Type">
