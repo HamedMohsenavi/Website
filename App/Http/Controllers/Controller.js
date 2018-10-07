@@ -33,7 +33,7 @@ class Controller
         });
     }
 
-    ValidateData(Request)
+    async ValidateData(Request)
     {
         const Result = validationResult(Request);
 
@@ -50,6 +50,11 @@ class Controller
         }
 
         return true;
+    }
+
+    Slug(Slug)
+    {
+        return Slug.replace(/([^a-zA-Z0-9]|-)+/g, '-');
     }
 }
 

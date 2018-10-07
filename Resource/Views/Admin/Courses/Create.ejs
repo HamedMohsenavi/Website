@@ -1,0 +1,16 @@
+<%- include(ViewPath('Errors')) %>
+
+<form action="/Admin/Courses/Create" method="POST">
+    <input type="text" name="Title" id="Title" placeholder="Title" value="<%= GetFormData('Title') %>"> <br>
+    <input type="text" name="Slug" id="Slug" placeholder="Slug" value="<%= GetFormData('Slug') %>"> <br>
+    <select name="Type" id="Type">
+        <option value="Free" <%= GetFormData('Type') === 'Free' ? 'selected' : '' %>>Free</option>
+        <option value="Vip" <%= GetFormData('Type') === 'Vip' ? 'selected' : '' %>>Vip</option>
+        <option value="Cash" <%= GetFormData('Type') === 'Cash' ? 'selected' : '' %>>Cash</option>
+    </select> <br>
+    <textarea name="Description" id="Description" rows="5"><%= GetFormData('Description') %></textarea> <br>
+    <input type="file" name="Image" id="Image"> <br>
+    <input type="text" name="Price" id="Price" placeholder="Price" value="<%= GetFormData('Price') %>"> <br>
+    <input type="text" name="Tags" id="Tags" placeholder="Tags" value="<%= GetFormData('Tags') %>"> <br>
+    <button type="submit">Create</button>
+</form>
