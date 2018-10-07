@@ -1,5 +1,9 @@
 // Node Native
 const fs = require('fs');
+const path = require('path');
+
+// Node Modules
+const sharp = require('sharp');
 
 // Controllers
 const Controller = require('App/Http/Controllers/Controller');
@@ -32,11 +36,32 @@ class CourseController extends Controller
             return Response.redirect('back');
         }
 
-        let { Title, Slug, Image, Type, Description, Price, Tags } = Request.body;
+        let Image = this.ImageResize(Request.file);
+        let { Title, Slug, Type, Description, Price, Tags } = Request.body;
 
-        await new Course({ Account: Request.user._id, Title, Slug: this.Slug(Slug), Type, Image, Description, Price, Tags }).save();
+        await new Course({ Account: Request.user._id, Title, Slug: this.Slug(Slug), Type, Image, Thumbnail: Image[480], Description, Price, Tags }).save();
 
         return Response.redirect('/Admin/Courses');
+    }
+
+    ImageResize(Image)
+    {
+        const ImageInfo = path.parse(Image.path);
+
+        let Address = { };
+
+        Address['Original'] = (`${Image.destination}/${Image.filename}`).substring(8);
+
+        [1080, 720, 480].map(Size =>
+        {
+            let ImageName = `${ImageInfo.name}-${Size}${ImageInfo.ext}`;
+            let ImagePath = `${Image.destination}/${ImageName}`;
+
+            Address[Size] = (ImagePath).substring(8);
+            sharp(Image.path).resize(Size, null).toFile(ImagePath);
+        });
+
+        return Address;
     }
 }
 
