@@ -25,7 +25,7 @@ class CourseController extends Controller
         Response.render('Admin/Courses/Create', { Title: 'Create Course Page' });
     }
 
-    async CreateProcess(Request, Response, Next)
+    async CreateProcess(Request, Response)
     {
         let Result = await this.ValidateData(Request);
 
@@ -46,20 +46,40 @@ class CourseController extends Controller
         return Response.redirect('/Admin/Courses');
     }
 
+    async Destroy(Request, Response)
+    {
+        let _Course = await Course.findById(Request.params.ID);
+
+        if (!_Course)
+            return Response.json('Course not found');
+
+        // Delete Images
+        Object.values(_Course.Image).forEach(Image =>
+        {
+            if (fs.existsSync(`./Public/${Image}`))
+                fs.unlinkSync(`./Public/${Image}`);
+        });
+
+        // Delete Course
+        _Course.remove();
+
+        return Response.redirect('/Admin/Courses');
+    }
+
     ImageResize(Image)
     {
         const ImageInfo = path.parse(Image.path);
 
         let Address = { };
 
-        Address['Original'] = (`${Image.destination}/${Image.filename}`).substring(8);
+        Address['Original'] = (`${Image.destination}/${Image.filename}`).substring(9);
 
         [1080, 720, 480].map(Size =>
         {
             let ImageName = `${ImageInfo.name}-${Size}${ImageInfo.ext}`;
             let ImagePath = `${Image.destination}/${ImageName}`;
 
-            Address[Size] = (ImagePath).substring(8);
+            Address[Size] = (ImagePath).substring(9);
             sharp(Image.path).resize(Size, null).toFile(ImagePath);
         });
 

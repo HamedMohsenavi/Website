@@ -14,8 +14,10 @@
                 <td><%= Course.ViewCount %></td>
                 <td><%= Course.Type %></td>
                 <td>
-                    <a href="#">Delete</a>
-                    <a href="#">Edit</a>
+                    <form action="/Admin/Courses/<%= Course._id %>?_Method=DELETE" method="POST">
+                        <button type="submit">Delete</button>
+                        <a href="#">Edit</a>
+                    </form>
                 </td>
             </tr>
         <% }) %>

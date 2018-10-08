@@ -27,6 +27,7 @@ Router.get('/', AdminController.Index);
 
 // Courses Routers
 Router.get('/Courses', CourseController.Index);
+Router.delete('/Courses/:ID', CourseController.Destroy);
 Router.get('/Courses/Create', CourseController.CreateIndex);
 Router.post('/Courses/Create', Upload.single('Image'), Convert.FileToField, AdminValidator.CreateCourse(), CourseController.CreateProcess);
 
