@@ -1,0 +1,25 @@
+<table>
+    <thead>
+        <th>Title</th>
+        <th>Comment Count</th>
+        <th>View Count</th>
+        <th>Type</th>
+        <th>Settings</th>
+    </thead>
+    <tbody>
+        <% Courses.Docs.forEach(Course => { %>
+            <tr>
+                <td><%= Course.Title %></td>
+                <td><%= Course.CommentCount %></td>
+                <td><%= Course.ViewCount %></td>
+                <td><%= Course.Type %></td>
+                <td>
+                    <a href="#">Delete</a>
+                    <a href="#">Edit</a>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
+
+<%- include(ViewPath('Pagination'), { Page: Courses.Page, Pages: Courses.Pages }) %>

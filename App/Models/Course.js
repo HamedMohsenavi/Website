@@ -1,6 +1,9 @@
 // Node Modules
 const mongoose = require('mongoose');
 
+// Helpers
+const Pagination = require('App/Helpers/Pagination');
+
 const Schema = mongoose.Schema;
 
 const Course = Schema(
@@ -18,5 +21,7 @@ const Course = Schema(
     CommentCount: { type: Number, default: 0 },
     ViewCount: { type: Number, default: 0 }
 }, { timestamps: true });
+
+Course.plugin(Pagination);
 
 module.exports = mongoose.model('Course', Course);

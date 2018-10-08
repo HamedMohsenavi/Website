@@ -1,0 +1,36 @@
+<div>
+    <% if (Pages > 1) { %>
+        <ul>
+            <% if (Page > 1) { %>
+                <li><a href="?Page=1">&laquo;</a></li>
+            <% } %>
+
+            <%
+                var i = 1;
+
+                if (Page > 5)
+                {
+                    i = +Page - 4;
+                }
+            %>
+
+            <% if (i !== 1) { %>
+                <li><a href="#">...</a></li>
+            <% } %>
+
+            <% for (i; i <= Pages; i++) { %>
+                <% if (Page == i) { %>
+                    <li><a href="#"><span><%= i %></span></a></li>
+                <% } else { %>
+                    <li><a href="?Page=<%= i %>"><%= i %></a></li>
+                <% } %>
+                <% if (i == (+Page + 4)) { %>
+                    <li><a href="#">...</a></li>
+                <% break; } %>
+            <% } %>
+            <% if (Page != Pages) { %>
+                <li><a href="?Page=<%= Pages %>">&raquo;</a></li>
+            <% } %>
+        </ul>
+    <% } %>
+</div>

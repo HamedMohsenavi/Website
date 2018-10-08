@@ -13,9 +13,11 @@ const Course = require('App/Models/Course');
 
 class CourseController extends Controller
 {
-    Index(Request, Response)
+    async Index(Request, Response)
     {
-        Response.render('Admin/Courses', { Title: 'Course Page' });
+        const _Course = await Course.Paginate({ }, { page: Request.query.Page || 1, sort: { createdAt: 1 }, limit: 10 });
+
+        Response.render('Admin/Courses', { Title: 'Course Page', Courses: _Course });
     }
 
     CreateIndex(Request, Response)
