@@ -46,9 +46,49 @@ class CourseController extends Controller
         return Response.redirect('/Admin/Courses');
     }
 
+    async EditIndex(Request, Response)
+    {
+        const _Course = await Course.findById(Request.params.ID);
+
+        if (!_Course)
+            return Response.json('Course not found');
+
+        Response.render('Admin/Courses/Edit', { Title: 'Edit Course Page', Course: _Course });
+    }
+
+    async EditProcess(Request, Response, Next)
+    {
+        let Result = await this.ValidateData(Request);
+
+        if (!Result)
+        {
+            if (Request.file)
+                fs.unlinkSync(Request.file.path);
+
+            Request.flash('GetFormData', Request.body);
+            return Response.redirect('back');
+        }
+
+        let Update = { };
+
+        Update.Thumbnail = Request.body.Thumbnail;
+
+        if (Request.file)
+        {
+            Update.Image = this.ImageResize(Request.file);
+            Update.Thumbnail = Update.Image[480];
+        }
+
+        console.log(Request.body);
+        delete Request.body.Image;
+        await Course.findByIdAndUpdate(Request.params.ID, { $set: { ...Request.body, ...Update } });
+
+        return Response.redirect('/Admin/Courses');
+    }
+
     async Destroy(Request, Response)
     {
-        let _Course = await Course.findById(Request.params.ID);
+        const _Course = await Course.findById(Request.params.ID);
 
         if (!_Course)
             return Response.json('Course not found');
@@ -72,14 +112,14 @@ class CourseController extends Controller
 
         let Address = { };
 
-        Address['Original'] = (`${Image.destination}/${Image.filename}`).substring(9);
+        Address['Original'] = (`${Image.destination}/${Image.filename}`).substring(8);
 
         [1080, 720, 480].map(Size =>
         {
             let ImageName = `${ImageInfo.name}-${Size}${ImageInfo.ext}`;
             let ImagePath = `${Image.destination}/${ImageName}`;
 
-            Address[Size] = (ImagePath).substring(9);
+            Address[Size] = (ImagePath).substring(8);
             sharp(Image.path).resize(Size, null).toFile(ImagePath);
         });
 

@@ -9,12 +9,20 @@ const Course = require('App/Models/Course');
 
 class AdminValidator
 {
-    CreateCourse()
+    CreateAndEditCourse()
     {
         return [
             check('Title').not().isEmpty().withMessage('Please enter a valid title'),
-            check('Slug').not().isEmpty().withMessage('Please enter a valid Slug').custom(async value =>
+            check('Slug').not().isEmpty().withMessage('Please enter a valid Slug').custom(async(value, { req }) =>
             {
+                if (req.query._Method === 'PUT')
+                {
+                    const _Course = await Course.findById(req.params.ID);
+
+                    if (_Course.Slug === value)
+                        return;
+                }
+
                 let _Course = await Course.findOne({ Slug: this.Slug(value) });
 
                 if (_Course)
@@ -34,8 +42,11 @@ class AdminValidator
                 }
             }),
             check('Description').isLength({ min: 20 }).withMessage('Write 20 characters or more for the description'),
-            check('Image').custom(async value =>
+            check('Image').custom(async(value, { req }) =>
             {
+                if (req.query._Method === 'PUT' && value === undefined)
+                    return;
+
                 if (!value)
                     throw new Error('Please select a image file');
 

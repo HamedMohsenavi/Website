@@ -1,0 +1,24 @@
+<%- include(ViewPath('Errors')) %>
+
+<form action="/Admin/Courses/Edit/<%= Course._id %>?_Method=PUT" method="POST" enctype="multipart/form-data">
+    <input type="text" name="Title" id="Title" placeholder="Title" value="<%= GetFormData('Title', Course.Title) %>"> <br>
+    <input type="text" name="Slug" id="Slug" placeholder="Slug" value="<%= GetFormData('Slug', Course.Slug) %>"> <br>
+    <select name="Type" id="Type">
+        <option value="Free" <%= GetFormData('Type', Course.Type) === 'Free' ? 'selected' : '' %>>Free</option>
+        <option value="Vip" <%= GetFormData('Type', Course.Type) === 'Vip' ? 'selected' : '' %>>Vip</option>
+        <option value="Cash" <%= GetFormData('Type', Course.Type) === 'Cash' ? 'selected' : '' %>>Cash</option>
+    </select> <br>
+    <textarea name="Description" id="Description" rows="5"><%= GetFormData('Description', Course.Description) %></textarea> <br>
+    <input type="file" name="Image" id="Image"> <br>
+
+    <% Object.entries(Course.Image).forEach(([Size, Address]) => { %>
+        <h5><%= Size %></h5>
+        <input type="radio" name="Thumbnail" id="Thumbnail" value="<%= Address %>" checked="">
+        <a href="<%= Address %>" target="_blank"><img src="<%= Address %>"></a>
+    <% }) %>
+
+    <br>
+    <input type="text" name="Price" id="Price" placeholder="Price" value="<%= GetFormData('Price', Course.Price) %>"> <br>
+    <input type="text" name="Tags" id="Tags" placeholder="Tags" value="<%= GetFormData('Tags', Course.Tags) %>"> <br>
+    <button type="submit">Edit</button>
+</form>

@@ -4,8 +4,8 @@ class Convert
     {
         if (!Request.file)
             Request.body.Image = undefined;
-
-        Request.body.Image = Request.file.filename;
+        else
+            Request.body.Image = Request.file.filename;
 
         Next();
     }

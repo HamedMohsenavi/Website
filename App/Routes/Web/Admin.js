@@ -29,6 +29,8 @@ Router.get('/', AdminController.Index);
 Router.get('/Courses', CourseController.Index);
 Router.delete('/Courses/:ID', CourseController.Destroy);
 Router.get('/Courses/Create', CourseController.CreateIndex);
-Router.post('/Courses/Create', Upload.single('Image'), Convert.FileToField, AdminValidator.CreateCourse(), CourseController.CreateProcess);
+Router.post('/Courses/Create', Upload.single('Image'), Convert.FileToField, AdminValidator.CreateAndEditCourse(), CourseController.CreateProcess);
+Router.get('/Courses/Edit/:ID', CourseController.EditIndex);
+Router.put('/Courses/Edit/:ID', Upload.single('Image'), Convert.FileToField, AdminValidator.CreateAndEditCourse(), CourseController.EditProcess);
 
 module.exports = Router;
