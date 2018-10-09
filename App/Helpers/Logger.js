@@ -14,7 +14,7 @@ module.exports.Analyze = (Tag, Message) =>
 {
     Message = Message || { };
 
-    if (process.env.DEBUG)
+    if (process.env.DEBUG.toLowerCase() === 'true')
         console.log(`${Tag} - ${util.inspect(Message, false, null)}`);
 
     Message.CreatedTime = Math.floor(Date.now() / 1000);

@@ -34,10 +34,10 @@ const App = express();
 
 // Establish Mongoose Connection
 mongoose.Promise = global.Promise;
-mongoose.set('debug', process.env.DEBUG);
+mongoose.set('debug', process.env.Debug.toLowerCase() === 'true');
 mongoose.set('useCreateIndex', true);
 mongoose.set('useFindAndModify', false);
-mongoose.connect(`mongodb://${process.env.DATABASE_USE_CREDENTIALS ? `${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@` : ''}${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}/${process.env.DATABASE_NAME}`,
+mongoose.connect(`mongodb://${process.env.DATABASE_USE_CREDENTIALS.toLowerCase() === 'true' ? `${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@` : ''}${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}/${process.env.DATABASE_NAME}`,
 {
     reconnectTries: Number.MAX_VALUE,
     reconnectInterval: 2500,
