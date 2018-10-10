@@ -60,6 +60,35 @@ class AdminValidator
         ];
     }
 
+    CreateEpisode()
+    {
+        return [
+            check('Course').not().isEmpty().withMessage('Please enter a valid Course'),
+            check('Title').not().isEmpty().withMessage('Please enter a valid title'),
+            check('Type').not().isEmpty().withMessage('Please select a type').custom(async value =>
+            {
+                switch (value)
+                {
+                    case 'Vip':
+                    case 'Cash':
+                    case 'Free':
+                        break;
+
+                    default:
+                        throw new Error('Please select a valid type');
+                }
+            }),
+            check('EpisodeNumber').isNumeric().withMessage('Episode Number cannot be empty'),
+            check('Time').custom(async value =>
+            {
+                if (!value.match('^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$'))
+                    throw new Error('Please enter a valid Time');
+            }),
+            check('FileName').not().isEmpty().withMessage('Please enter a valid File Name'),
+            check('Description').isLength({ min: 20 }).withMessage('Write 20 characters or more for the description')
+        ];
+    }
+
     Slug(Slug)
     {
         return Slug.replace(/([^a-zA-Z0-9]|-)+/g, '-');

@@ -1,0 +1,20 @@
+<%- include(ViewPath('Errors')) %>
+
+<form action="/Admin/Episodes/Create" method="POST">
+    <select name="Course" id="Course">
+        <% Courses.forEach(Course => { %>
+            <option value="<%= Course._id %>" <%= GetFormData('Course') === String(Course._id) ? 'selected' : '' %>><%= Course.Title %></option>
+        <% }) %>
+    </select> <br>
+    <input type="text" name="Title" id="Title" placeholder="Title" value="<%= GetFormData('Title') %>"> <br>
+    <select name="Type" id="Type">
+        <option value="Free" <%= GetFormData('Type') === 'Free' ? 'selected' : '' %>>Free</option>
+        <option value="Vip" <%= GetFormData('Type') === 'Vip' ? 'selected' : '' %>>Vip</option>
+        <option value="Cash" <%= GetFormData('Type') === 'Cash' ? 'selected' : '' %>>Cash</option>
+    </select> <br>
+    <textarea name="Description" id="Description" rows="5"><%= GetFormData('Description') %></textarea> <br>
+    <input type="text" name="Time" id="Time" placeholder="00:00:00" value="<%= GetFormData('Time') %>"> <br>
+    <input type="text" name="FileName" id="FileName" placeholder="FileName" value="<%= GetFormData('FileName') %>"> <br>
+    <input type="text" name="EpisodeNumber" id="EpisodeNumber" placeholder="EpisodeNumber" value="<%= GetFormData('EpisodeNumber') %>"> <br>
+    <button type="submit">Create</button>
+</form>

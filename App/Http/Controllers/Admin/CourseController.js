@@ -121,7 +121,7 @@ class CourseController extends Controller
         {
             this.ValidateMongoID(Request.params.ID);
 
-            const _Course = await Course.findById(Request.params.ID);
+            const _Course = await Course.findById(Request.params.ID).populate('Episodes');
 
             if (!_Course)
                 this.SetError('Course Not Found', 404);
@@ -133,10 +133,13 @@ class CourseController extends Controller
                     fs.unlinkSync(`./Public/${Image}`);
             });
 
+            // Delete Episode
+            _Course.Episodes.forEach(Episode => Episode.remove());
+
             // Delete Course
             _Course.remove();
 
-            return Response.redirect('/Admin/Courses');
+            return Response.redirect('back');
         }
         catch (Error)
         {

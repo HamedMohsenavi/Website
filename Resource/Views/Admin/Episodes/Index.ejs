@@ -1,0 +1,31 @@
+<table>
+    <thead>
+        <th>Title</th>
+        <th>Type</th>
+        <th>Time</th>
+        <th>Download Count</th>
+        <th>Comment Count</th>
+        <th>View Count</th>
+        <th>Settings</th>
+    </thead>
+    <tbody>
+        <% Episodes.Docs.forEach(Episode => { %>
+            <tr>
+                <td><%= Episode.Title %></td>
+                <td><%= Episode.Type %></td>
+                <td><%= Episode.Time %></td>
+                <td><%= Episode.DownloadCount %></td>
+                <td><%= Episode.CommentCount %></td>
+                <td><%= Episode.ViewCount %></td>
+                <td>
+                    <form action="/Admin/Episodes/<%= Episode._id %>?_Method=DELETE" method="POST">
+                        <button type="submit">Delete</button>
+                        <a href="/Admin/Episodes/Edit/<%= Episode._id %>">Edit</a>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
+
+<%- include(ViewPath('Pagination'), { Page: Episodes.Page, Pages: Episodes.Pages }) %>

@@ -20,8 +20,10 @@ const Course = Schema(
     Time: { type: String, default: '00:00:00' },
     CommentCount: { type: Number, default: 0 },
     ViewCount: { type: Number, default: 0 }
-}, { timestamps: true });
+}, { timestamps: true, toJSON: { virtuals: true } });
 
 Course.plugin(Pagination);
+
+Course.virtual('Episodes', { ref: 'Episode', localField: '_id', foreignField: 'Course' });
 
 module.exports = mongoose.model('Course', Course);
