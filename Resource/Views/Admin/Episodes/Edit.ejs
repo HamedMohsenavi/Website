@@ -1,0 +1,20 @@
+<%- include(ViewPath('Errors')) %>
+
+<form action="/Admin/Episodes/Edit/<%= Episode._id %>?_Method=PUT" method="POST">
+    <select name="Course" id="Course">
+        <% Courses.forEach(Course => { %>
+            <option value="<%= Course._id %>" <%= String(GetFormData('Course', Course._id)) === String(Course._id) ? 'selected' : '' %>><%= Course.Title %></option>
+        <% }) %>
+    </select> <br>
+    <input type="text" name="Title" id="Title" placeholder="Title" value="<%= GetFormData('Title', Episode.Title) %>"> <br>
+    <select name="Type" id="Type">
+        <option value="Free" <%= GetFormData('Type', Episode.Type) === 'Free' ? 'selected' : '' %>>Free</option>
+        <option value="Vip" <%= GetFormData('Type', Episode.Type) === 'Vip' ? 'selected' : '' %>>Vip</option>
+        <option value="Cash" <%= GetFormData('Type', Episode.Type) === 'Cash' ? 'selected' : '' %>>Cash</option>
+    </select> <br>
+    <textarea name="Description" id="Description" rows="5"><%= GetFormData('Description', Episode.Description) %></textarea> <br>
+    <input type="text" name="Time" id="Time" placeholder="00:00:00" value="<%= GetFormData('Time', Episode.Time) %>"> <br>
+    <input type="text" name="FileName" id="FileName" placeholder="FileName" value="<%= GetFormData('FileName', Episode.FileName) %>"> <br>
+    <input type="text" name="EpisodeNumber" id="EpisodeNumber" placeholder="EpisodeNumber" value="<%= GetFormData('EpisodeNumber', Episode.EpisodeNumber) %>"> <br>
+    <button type="submit">Edit</button>
+</form>

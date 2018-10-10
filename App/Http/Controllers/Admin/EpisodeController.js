@@ -41,6 +41,55 @@ class EpisodeController extends Controller
 
             await new Episode({ ...Request.body }).save();
 
+            // Update Course Time
+            this.UpdateTime(Request.body.Course);
+
+            return Response.redirect('/Admin/Episodes');
+        }
+        catch (Error)
+        {
+            Next(Error);
+        }
+    }
+
+    async EditIndex(Request, Response, Next)
+    {
+        try
+        {
+            this.ValidateMongoID(Request.params.ID);
+
+            const _Episode = await Episode.findById(Request.params.ID);
+            const _Course = await Course.find({ });
+
+            if (!_Episode)
+                this.SetError('Episode Not Found', 404);
+
+            Response.render('Admin/Episodes/Edit', { Title: 'Edit Episode Page', Episode: _Episode, Courses: _Course });
+        }
+        catch (Error)
+        {
+            Next(Error);
+        }
+    }
+
+    async EditProcess(Request, Response, Next)
+    {
+        try
+        {
+            let Result = await this.ValidateData(Request);
+
+            if (!Result)
+            {
+                Request.flash('GetFormData', Request.body);
+                return Response.redirect('back');
+            }
+
+            let Previous = await Episode.findByIdAndUpdate(Request.params.ID, { $set: { ...Request.body } });
+
+            // Update Course Time
+            this.UpdateTime(Previous.Course);
+            this.UpdateTime(Request.body.Course);
+
             return Response.redirect('/Admin/Episodes');
         }
         catch (Error)
@@ -63,12 +112,21 @@ class EpisodeController extends Controller
             // Delete Episode
             _Episode.remove();
 
+            // Update Course Time
+            this.UpdateTime(_Episode.Course);
+
             return Response.redirect('back');
         }
         catch (Error)
         {
             Next(Error);
         }
+    }
+
+    async UpdateTime(ID)
+    {
+        let _Course = await Course.findById(ID).populate('Episodes').exec();
+        await _Course.set({ Time: this.GetTime(_Course.Episodes) }).save();
     }
 }
 

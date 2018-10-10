@@ -2,6 +2,7 @@
 const Recaptcha = require('express-recaptcha').Recaptcha;
 const { validationResult } = require('express-validator/check');
 const isMongoId = require('validator/lib/isMongoId');
+const sprintf = require('sprintf-js').sprintf;
 
 class Controller
 {
@@ -69,6 +70,28 @@ class Controller
         let _Error = new Error(Message);
         _Error.statusCode = Status;
         throw _Error;
+    }
+
+    GetTime(Values)
+    {
+        let Secound = 0;
+
+        Values.forEach(Value =>
+        {
+            let Time = Value.Time.split(':');
+
+            Secound += parseInt(Time[0]) * 3600;
+            Secound += parseInt(Time[1]) * 60;
+            Secound += parseInt(Time[2]);
+        });
+
+        let Minute = Math.floor(Secound / 60);
+        let Hour = Math.floor(Minute / 60);
+
+        Minute -= Hour * 60;
+        Secound = Math.ceil(((Secound / 60) % 1) * 60);
+
+        return sprintf('%02d:%02d:%02d', Hour, Minute, Secound);
     }
 }
 

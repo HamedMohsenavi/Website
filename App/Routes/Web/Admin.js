@@ -38,6 +38,8 @@ Router.put('/Courses/Edit/:ID', Upload.single('Image'), Convert.FileToField, Adm
 Router.get('/Episodes', EpisodeController.Index);
 Router.delete('/Episodes/:ID', EpisodeController.Destroy);
 Router.get('/Episodes/Create', EpisodeController.CreateIndex);
-Router.post('/Episodes/Create', AdminValidator.CreateEpisode(), EpisodeController.CreateProcess);
+Router.post('/Episodes/Create', AdminValidator.CreateAndEditEpisode(), EpisodeController.CreateProcess);
+Router.get('/Episodes/Edit/:ID', EpisodeController.EditIndex);
+Router.put('/Episodes/Edit/:ID', AdminValidator.CreateAndEditEpisode(), EpisodeController.EditProcess);
 
 module.exports = Router;

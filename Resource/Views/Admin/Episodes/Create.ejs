@@ -3,7 +3,7 @@
 <form action="/Admin/Episodes/Create" method="POST">
     <select name="Course" id="Course">
         <% Courses.forEach(Course => { %>
-            <option value="<%= Course._id %>" <%= GetFormData('Course') === String(Course._id) ? 'selected' : '' %>><%= Course.Title %></option>
+            <option value="<%= Course._id %>" <%= String(GetFormData('Course')) === String(Course._id) ? 'selected' : '' %>><%= Course.Title %></option>
         <% }) %>
     </select> <br>
     <input type="text" name="Title" id="Title" placeholder="Title" value="<%= GetFormData('Title') %>"> <br>
