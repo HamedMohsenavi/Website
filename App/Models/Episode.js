@@ -1,5 +1,6 @@
 // Node Modules
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 // Helpers
 const Pagination = require('App/Helpers/Pagination');
@@ -22,9 +23,33 @@ const Episode = Schema(
 
 Episode.plugin(Pagination);
 
-Episode.methods.Download = function()
+Episode.methods.Download = function(IsAuthenticated, HasAccess)
 {
-    return '#';
+    if (!IsAuthenticated)
+        return '/Authentication/Login';
+
+    let Status = false;
+
+    switch (this.Type)
+    {
+        case 'Vip':
+            Status = HasAccess;
+            break;
+
+        case 'Cash':
+            Status = HasAccess;
+            break;
+
+        default:
+            Status = true;
+            break;
+    }
+
+    let TimeStamps = new Date().getTime() + 3600 * 1000 * 6;
+    let SecretKey = process.env.DOWNLOAD_SECRET_KEY + this._id + TimeStamps;
+    let Hash = bcrypt.hashSync(SecretKey, bcrypt.genSaltSync(15));
+
+    return Status ? `/Course/Download/${this._id}?Mac=${Hash}&TimeStamps=${TimeStamps}` : '';
 };
 
 module.exports = mongoose.model('Episode', Episode);

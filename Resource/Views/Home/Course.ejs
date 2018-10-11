@@ -39,7 +39,7 @@
                     <th><a href=""><%= Episode.EpisodeNumber %></a></th>
                     <td><%= Episode.Title %></td>
                     <td><%= Episode.Time %></td>
-                    <td><a href="<%= Episode.Download() %>">Download</a></td>
+                    <td><a href="<%= Episode.Download(Request.isAuthenticated(), HasAccess) %>">Download</a></td>
                 </tr>
             <% }) %>
         </tbody>

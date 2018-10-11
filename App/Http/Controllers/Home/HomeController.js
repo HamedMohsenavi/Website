@@ -1,8 +1,16 @@
+// Node Native
+const path = require('path');
+const fs = require('fs');
+
+// Node Modules
+const bcrypt = require('bcrypt');
+
 // Controllers
 const Controller = require('App/Http/Controllers/Controller');
 
 // Models
 const Course = require('App/Models/Course');
+const Episode = require('App/Models/Episode');
 
 class HomeController extends Controller
 {
@@ -25,6 +33,36 @@ class HomeController extends Controller
             let _HasAccess = await this.HasAccess(Request, _Course);
 
             return Response.render('Home/Course', { Title: _Course.Title, Course: _Course, HasAccess: _HasAccess });
+        }
+        catch (Error)
+        {
+            Next(Error);
+        }
+    }
+
+    async DownloadEpisode(Request, Response, Next)
+    {
+        try
+        {
+            this.ValidateMongoID(Request.params.ID);
+
+            if (!Request.isAuthenticated())
+                return Response.redirect('/Authentication/Login');
+
+            let _Episode = await Episode.findById(Request.params.ID);
+
+            if (!_Episode)
+                this.SetError('Episode Not Found', 404);
+
+            if (!this.CheckHash(Request, _Episode))
+                this.SetError('Your link has expired', 403);
+
+            let FilePath = path.resolve(`./Resource/Storage/Courses/${_Episode.FileName}`);
+
+            if (!fs.existsSync(FilePath))
+                this.SetError('Episode Not Found', 404);
+
+            return Response.download(FilePath);
         }
         catch (Error)
         {
@@ -55,6 +93,18 @@ class HomeController extends Controller
         }
 
         return HasAccess;
+    }
+
+    CheckHash(Request, Episode)
+    {
+        let TimeStamps = new Date().getTime();
+
+        if (Request.query.TimeStamps < TimeStamps)
+            this.SetError('Your link has expired', 403);
+
+        let SecretKey = process.env.DOWNLOAD_SECRET_KEY + Episode._id + Request.query.TimeStamps;
+
+        return bcrypt.compareSync(SecretKey, Request.query.Mac);
     }
 }
 
