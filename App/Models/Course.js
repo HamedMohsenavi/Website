@@ -26,4 +26,9 @@ Course.plugin(Pagination);
 
 Course.virtual('Episodes', { ref: 'Episode', localField: '_id', foreignField: 'Course' });
 
+Course.methods.Path = function()
+{
+    return `/Course/${this.Slug}`;
+};
+
 module.exports = mongoose.model('Course', Course);

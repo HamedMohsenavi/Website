@@ -121,7 +121,7 @@ class CourseController extends Controller
         {
             this.ValidateMongoID(Request.params.ID);
 
-            const _Course = await Course.findById(Request.params.ID).populate('Episodes');
+            const _Course = await Course.findById(Request.params.ID).populate('Episodes').exec();
 
             if (!_Course)
                 this.SetError('Course Not Found', 404);

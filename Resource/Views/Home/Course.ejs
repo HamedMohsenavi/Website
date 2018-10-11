@@ -1,0 +1,47 @@
+<div>
+    <h1><%= Course.Title %></h1>
+    <p>
+        <span><%= Course.Account.Name %></span>
+        <span><%= Course.createdAt %></span>
+        <span>Course Time: <%= Course.Time %></span>
+    </p>
+    <p><%- Course.Description %></p>
+ 
+    <div>
+        <% if (Request.isAuthenticated()) { %>
+            <% if (Course.Type === 'Vip') { %>
+                <% if (!HasAccess) { %>
+                    <h6>This course is only available to V.I.P members</h6>
+                <% } %>
+            <% } else if (Course.Type === 'Cash') { %>
+                <% if (!HasAccess) { %>
+                    <h4><a href="#">Buy Course</a></h4>
+                <% } else { %>
+                    <h4>You have purchased this course</h4>
+                <% } %>
+            <% } %>
+        <% } else {%>
+            <h1>You have to login to view this course</h1>
+        <% } %>
+    </div>
+
+    <h3>Episodes</h3>
+    <table>
+        <thead>
+            <th>#</th>
+            <th>Title</th>
+            <th>Time</th>
+            <th>Download</th>
+        </thead>
+        <tbody>
+            <% Course.Episodes.forEach(Episode =>{ %>
+                <tr>
+                    <th><a href=""><%= Episode.EpisodeNumber %></a></th>
+                    <td><%= Episode.Title %></td>
+                    <td><%= Episode.Time %></td>
+                    <td><a href="<%= Episode.Download() %>">Download</a></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>

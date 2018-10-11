@@ -44,4 +44,14 @@ Account.methods.SetRemember = function(Response)
     });
 };
 
+Account.methods.IsVip = function()
+{
+    return true;
+};
+
+Account.methods.IsPurchased = async function(Model)
+{
+    return true;
+};
+
 module.exports = mongoose.model('Account', Account);

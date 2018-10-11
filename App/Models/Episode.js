@@ -22,4 +22,9 @@ const Episode = Schema(
 
 Episode.plugin(Pagination);
 
+Episode.methods.Download = function()
+{
+    return '#';
+};
+
 module.exports = mongoose.model('Episode', Episode);

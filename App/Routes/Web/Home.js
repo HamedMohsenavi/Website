@@ -13,5 +13,6 @@ Router.get('/Logout', (Request, Response) =>
 });
 
 Router.get('/', HomeController.Index);
+Router.get('/Course/:Slug', HomeController.CourseIndex);
 
 module.exports = Router;

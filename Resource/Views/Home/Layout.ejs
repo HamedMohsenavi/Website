@@ -9,6 +9,15 @@
     <%- style %>
 </head>
 <body id="HomeLayout">
+
+    <% if (Request.isAuthenticated()) { %>
+        <a href="/Logout">Logout</a>
+        <a href="/Settings">Settings</a>
+    <% } else { %>
+        <a href="/Authentication/Login">Login</a>
+        <a href="/Authentication/Registration">Registration</a>
+    <% } %>
+
     <%- body %>
 
     <script src="/Javascripts/Scripts.js"></script>
