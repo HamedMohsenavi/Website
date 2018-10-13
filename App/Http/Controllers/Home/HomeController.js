@@ -26,9 +26,7 @@ class HomeController extends Controller
     {
         try
         {
-            const _Course = await Course.findOne({ Slug: Request.params.Slug })
-                .populate([{ path: 'Account', select: 'Name' }, { path: 'Episodes', options: { sort: { EpisodeNumber: 1 } } }])
-                .populate([{ path: 'Comments', match: { Parent: { $eq: null }, Approved: { $eq: true } } }]);
+            const _Course = await Course.findOne({ Slug: Request.params.Slug }).populate([{ path: 'Account', select: 'Name' }, { path: 'Episodes', options: { sort: { EpisodeNumber: 1 } } }, { path: 'Comments', match: { Parent: { $eq: null }, Approved: { $eq: true } }, populate: [{ path: 'Account', select: 'Name' }, { path: 'Children', match: { Approved: { $eq: true } }, populate: [{ path: 'Account', select: 'Name' }] }] }]);
 
             if (!_Course)
                 this.SetError('Course Not Found', 404);

@@ -13,9 +13,11 @@ const Comment = Schema(
     Course: { type: Schema.Types.ObjectId, ref: 'Course', default: undefined },
     Episode: { type: Schema.Types.ObjectId, ref: 'Episode', default: undefined },
     Approved: { type: Boolean, default: false },
-    Comment: { type: String, require: true }
+    Description: { type: String, require: true }
 }, { timestamps: true, toJSON: { virtuals: true } });
 
 Comment.plugin(Pagination);
+
+Comment.virtual('Children', { ref: 'Comment', localField: '_id', foreignField: 'Parent' });
 
 module.exports = mongoose.model('Comment', Comment);

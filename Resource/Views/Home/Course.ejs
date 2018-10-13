@@ -51,11 +51,28 @@
         <%- include(ViewPath('Errors')) %>
         <form action="/Comment" method="POST">
             <input type="hidden" name="<%= Course.constructor.modelName %>" value="<%= Course._id %>">
-            <textarea name="Comment" id="Comment" rows="3" <%= GetFormData('Comment') %>></textarea>
+            <textarea name="Description" id="Description" rows="3" <%= GetFormData('Description') %>></textarea>
             <button type="submit">Send</button>
         </form>
     <% } %>
     <hr>
-    <h4>Hamed Mohsenavi</h4>
-    <p>Good Joob</p>
+    <% Course.Comments.forEach(Comment => { %>
+        <h4><%= Comment.Account.Name %></h4>
+        <% if (Request.isAuthenticated()) { %>
+            <%- include(ViewPath('Errors')) %>
+            <form action="/Comment" method="POST">
+                <input type="hidden" name="Parent" value="<%= Comment._id %>">
+                <input type="hidden" name="<%= Course.constructor.modelName %>" value="<%= Course._id %>">
+                <textarea name="Description" id="Description" rows="3" <%= GetFormData('Description') %>></textarea>
+                <button type="submit">Send</button>
+            </form>
+        <% } %>
+        <p><%- Comment.Description %></p>
+
+        <!-- Children -->
+        <% Comment.Children.forEach(Comment => { %>
+            <h5><%= Comment.Account.Name %></h5>
+            <h6><%- Comment.Description %></h6>
+        <% }); %>
+    <% }); %>
 </div>
