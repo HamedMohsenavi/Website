@@ -25,6 +25,7 @@ const Course = Schema(
 Course.plugin(Pagination);
 
 Course.virtual('Episodes', { ref: 'Episode', localField: '_id', foreignField: 'Course' });
+Course.virtual('Comments', { ref: 'Comment', localField: '_id', foreignField: 'Course' });
 
 Course.methods.Path = function()
 {

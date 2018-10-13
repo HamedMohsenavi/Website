@@ -44,4 +44,18 @@
             <% }) %>
         </tbody>
     </table>
+
+    <hr>
+    <h1>Comments</h1>
+    <% if (Request.isAuthenticated()) { %>
+        <%- include(ViewPath('Errors')) %>
+        <form action="/Comment" method="POST">
+            <input type="hidden" name="<%= Course.constructor.modelName %>" value="<%= Course._id %>">
+            <textarea name="Comment" id="Comment" rows="3" <%= GetFormData('Comment') %>></textarea>
+            <button type="submit">Send</button>
+        </form>
+    <% } %>
+    <hr>
+    <h4>Hamed Mohsenavi</h4>
+    <p>Good Joob</p>
 </div>

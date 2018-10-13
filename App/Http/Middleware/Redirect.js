@@ -8,6 +8,14 @@ class Redirect
         Next();
     }
 
+    IsNotAuthenticated(Request, Response, Next)
+    {
+        if (Request.isAuthenticated())
+            return Next();
+
+        return Response.redirect('/Authentication/Login');
+    }
+
     IsAdmin(Request, Response, Next)
     {
         if (Request.isAuthenticated() && Request.user.Admin)

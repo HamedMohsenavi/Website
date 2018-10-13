@@ -11,6 +11,7 @@ const Controller = require('App/Http/Controllers/Controller');
 // Models
 const Course = require('App/Models/Course');
 const Episode = require('App/Models/Episode');
+const Comment = require('App/Models/Comment');
 
 class HomeController extends Controller
 {
@@ -25,7 +26,9 @@ class HomeController extends Controller
     {
         try
         {
-            const _Course = await Course.findOne({ Slug: Request.params.Slug }).populate([{ path: 'Account', select: 'Name' }, { path: 'Episodes', options: { sort: { EpisodeNumber: 1 } } }]);
+            const _Course = await Course.findOne({ Slug: Request.params.Slug })
+                .populate([{ path: 'Account', select: 'Name' }, { path: 'Episodes', options: { sort: { EpisodeNumber: 1 } } }])
+                .populate([{ path: 'Comments', match: { Parent: { $eq: null }, Approved: { $eq: true } } }]);
 
             if (!_Course)
                 this.SetError('Course Not Found', 404);
@@ -63,6 +66,31 @@ class HomeController extends Controller
                 this.SetError('Episode Not Found', 404);
 
             return Response.download(FilePath);
+        }
+        catch (Error)
+        {
+            Next(Error);
+        }
+    }
+
+    async Comment(Request, Response, Next)
+    {
+        try
+        {
+            let Result = await this.ValidateData(Request);
+
+            if (!Result)
+            {
+                Request.flash('GetFormData', Request.body);
+                return Response.redirect('back');
+            }
+
+            let _Comment = new Comment({ Account: Request.user._id, ...Request.body });
+
+            _Comment.Approved = false;
+            await _Comment.save();
+
+            return Response.redirect('back');
         }
         catch (Error)
         {
