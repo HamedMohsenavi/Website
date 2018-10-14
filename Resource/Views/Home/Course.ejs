@@ -51,7 +51,7 @@
         <%- include(ViewPath('Errors')) %>
         <form action="/Comment" method="POST">
             <input type="hidden" name="<%= Course.constructor.modelName %>" value="<%= Course._id %>">
-            <textarea name="Description" id="Description" rows="3" <%= GetFormData('Description') %>></textarea>
+            <textarea name="Description" id="Description" rows="3"></textarea>
             <button type="submit">Send</button>
         </form>
     <% } %>
@@ -63,7 +63,7 @@
             <form action="/Comment" method="POST">
                 <input type="hidden" name="Parent" value="<%= Comment._id %>">
                 <input type="hidden" name="<%= Course.constructor.modelName %>" value="<%= Course._id %>">
-                <textarea name="Description" id="Description" rows="3" <%= GetFormData('Description') %>></textarea>
+                <textarea name="Description" id="Description" rows="3"></textarea>
                 <button type="submit">Send</button>
             </form>
         <% } %>

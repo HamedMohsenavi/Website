@@ -4,6 +4,8 @@ const Router = require('express').Router();
 // Controllers
 const CourseController = require('App/Http/Controllers/Admin/CourseController');
 const EpisodeController = require('App/Http/Controllers/Admin/EpisodeController');
+const AdminController = require('App/Http/Controllers/Admin/AdminController');
+const CommentController = require('App/Http/Controllers/Admin/CommentController');
 
 // Validator
 const AdminValidator = require('App/Http/Validators/AdminValidator');
@@ -14,9 +16,6 @@ Router.use((Request, Response, Next) =>
     Response.locals.layout = 'Admin/Layout';
     Next();
 });
-
-// Controllers
-const AdminController = require('App/Http/Controllers/Admin/AdminController');
 
 // Helpers
 const Upload = require('App/Helpers/Upload');
@@ -41,5 +40,11 @@ Router.get('/Episodes/Create', EpisodeController.CreateIndex);
 Router.post('/Episodes/Create', AdminValidator.CreateAndEditEpisode(), EpisodeController.CreateProcess);
 Router.get('/Episodes/Edit/:ID', EpisodeController.EditIndex);
 Router.put('/Episodes/Edit/:ID', AdminValidator.CreateAndEditEpisode(), EpisodeController.EditProcess);
+
+// Comments Routers
+Router.get('/Comments', CommentController.Index);
+Router.delete('/Comments/:ID', CommentController.Destroy);
+Router.get('/Comments/Approved', CommentController.ApprovedIndex);
+Router.put('/Comments/Approved/:ID', CommentController.ApprovedProcess);
 
 module.exports = Router;

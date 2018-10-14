@@ -1,0 +1,39 @@
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Content</th>
+            <th>Description</th>
+            <th>Settings</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% Comments.Docs.forEach(Comment => { %>
+            <tr>
+                <td>
+                    <%= Comment.Account.Name %>
+                </td>
+                <td>
+                    <% if (Comment.Course) { %>
+                        <a href="<%= Comment.Course.Path() %>"><%= Comment.Course.Title %></a>
+                    <% } else if (Comment.Episode) { %>
+                        <a href="<%= Comment.Episode.Path() %>"><%= Comment.Episode.Title %></a>
+                    <% } %>
+                </td>
+                <td>
+                    <%= Comment.Description %>
+                </td>
+                <td>
+                    <form action="/Admin/Comments/<%= Comment._id %>?_Method=DELETE" method="POST">
+                        <button type="submit">Delete</button>
+                    </form>
+                    <form action="/Admin/Comments/Approved/<%= Comment._id %>?_Method=PUT" method="POST">
+                        <button type="submit">Approved</button>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
+
+<%- include(ViewPath('Pagination'), { Page: Comments.Page, Pages: Comments.Pages }) %>

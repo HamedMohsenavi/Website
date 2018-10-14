@@ -78,10 +78,7 @@ class HomeController extends Controller
             let Result = await this.ValidateData(Request);
 
             if (!Result)
-            {
-                Request.flash('GetFormData', Request.body);
                 return Response.redirect('back');
-            }
 
             let _Comment = new Comment({ Account: Request.user._id, ...Request.body });
 

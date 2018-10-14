@@ -23,6 +23,11 @@ const Episode = Schema(
 
 Episode.plugin(Pagination);
 
+Episode.methods.Path = function()
+{
+    return `${this.Course.Path()}/Episode/${this.EpisodeNumber}`;
+};
+
 Episode.methods.Download = function(IsAuthenticated, HasAccess)
 {
     if (!IsAuthenticated)
