@@ -2,7 +2,7 @@
     <h1><%= Course.Title %></h1>
     <p>
         <span><%= Course.Account.Name %></span>
-        <span><%= Course.createdAt %></span>
+        <span><%= GetDate(Course.createdAt).format('MMMM Do YYYY, h:mm:ss a') %></span><br>
         <span>Course Time: <%= Course.Time %></span>
     </p>
     <p><%- Course.Description %></p>
@@ -57,7 +57,7 @@
     <% } %>
     <hr>
     <% Course.Comments.forEach(Comment => { %>
-        <h4><%= Comment.Account.Name %></h4>
+        <h4><%= Comment.Account.Name %> --- <small><%= GetDate(Comment.createdAt).fromNow() %></small></h4>
         <% if (Request.isAuthenticated()) { %>
             <%- include(ViewPath('Errors')) %>
             <form action="/Comment" method="POST">
@@ -71,7 +71,7 @@
 
         <!-- Children -->
         <% Comment.Children.forEach(Comment => { %>
-            <h5><%= Comment.Account.Name %></h5>
+            <h5><%= Comment.Account.Name %> --- <small><%= GetDate(Comment.createdAt).fromNow() %></small></h5>
             <h6><%- Comment.Description %></h6>
         <% }); %>
     <% }); %>

@@ -1,6 +1,9 @@
 // Node Native
 const path = require('path');
 
+// Node Module
+const moment = require('moment');
+
 class Helper
 {
     constructor(Request)
@@ -16,7 +19,8 @@ class Helper
             Errors: this.Request.flash('Errors'),
             Request: this.Request,
             ViewPath: this.ViewPath,
-            GetFormData: this.GetFormData
+            GetFormData: this.GetFormData,
+            GetDate: this.GetDate
         };
     }
 
@@ -28,6 +32,11 @@ class Helper
     GetFormData(Field, Default = '')
     {
         return this.FormData && this.FormData.hasOwnProperty(Field) ? this.FormData[Field] : Default;
+    }
+
+    GetDate(Time)
+    {
+        return moment(Time);
     }
 }
 
