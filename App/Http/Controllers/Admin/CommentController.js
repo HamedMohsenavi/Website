@@ -38,11 +38,12 @@ class CommentController extends Controller
         {
             this.ValidateMongoID(Request.params.ID);
 
-            let _Comment = await Comment.findById(Request.params.ID);
+            let _Comment = await Comment.findById(Request.params.ID).populate('Belongs').exec();
 
             if (!_Comment)
                 this.SetError('Comment Not Found', 404);
 
+            _Comment.Belongs.Increase('CommentCount');
             _Comment.Approved = true;
 
             await _Comment.save();

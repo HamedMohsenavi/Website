@@ -32,4 +32,10 @@ Course.methods.Path = function()
     return `/Course/${this.Slug}`;
 };
 
+Course.methods.Increase = async function(Field, Count = 1)
+{
+    this[Field] += Count;
+    await this.save();
+};
+
 module.exports = mongoose.model('Course', Course);

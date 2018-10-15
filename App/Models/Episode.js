@@ -57,4 +57,10 @@ Episode.methods.Download = function(IsAuthenticated, HasAccess)
     return Status ? `/Course/Download/${this._id}?Mac=${Hash}&TimeStamps=${TimeStamps}` : '';
 };
 
+Episode.methods.Increase = async function(Field, Count = 1)
+{
+    this[Field] += Count;
+    await this.save();
+};
+
 module.exports = mongoose.model('Episode', Episode);

@@ -18,6 +18,15 @@ const Comment = Schema(
 
 Comment.plugin(Pagination);
 
+const Belongs = doc =>
+{
+    if (doc.Course)
+        return 'Course';
+    else if (doc.Episode)
+        return 'Episode';
+};
+
 Comment.virtual('Children', { ref: 'Comment', localField: '_id', foreignField: 'Parent' });
+Comment.virtual('Belongs', { ref: Belongs, localField: Belongs, foreignField: '_id', justOne: true });
 
 module.exports = mongoose.model('Comment', Comment);
