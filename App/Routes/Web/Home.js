@@ -19,6 +19,7 @@ Router.get('/Logout', (Request, Response) =>
 });
 
 Router.get('/', HomeController.Index);
+Router.get('/Courses', HomeController.CoursesIndex);
 Router.get('/Course/:Slug', HomeController.CourseIndex);
 Router.get('/Course/Download/:ID', HomeController.DownloadEpisode);
 Router.post('/Comment', Redirect.IsNotAuthenticated, HomeValidator.Comment(), HomeController.Comment);

@@ -1,0 +1,41 @@
+<% let { Search, Type, Order } = Request.query %>
+
+<form action="/Courses" method="GET">
+<% if (Search) { %>
+    <input type="hidden" name="Search" value="<%= Search %>">
+    <span>
+        Searched: <%= Search %>
+        <a href="/Courses?<%= Type ? 'Type=' + Type : '' %><%= Order ? '&Order=1' : '' %>">Delete</a>
+    </span>
+<% } %>
+
+<!-- Course Type -->
+<select name="Type" id="Type">
+    <option value="All" <%= Type === 'All' ? 'selected' : '' %>>All</option>
+    <option value="Vip" <%= Type === 'Vip' ? 'selected' : '' %>>Vip</option>
+    <option value="Cash" <%= Type === 'Cash' ? 'selected' : '' %>>Cash</option>
+    <option value="Free" <%= Type === 'Free' ? 'selected' : '' %>>Free</option>
+</select>
+
+<!-- Order By -->
+<input type="checkbox" name="Order" value="1" <%= Order === '1' ? 'checked' : '' %>> New -> Old
+
+<!-- Filter -->
+<button type="submit">Filter</button>
+</form>
+
+<hr>
+
+<h1>Courses</h1>
+
+<div>
+    <% Courses.forEach(Course => { %>
+        <h3><%= Course.Title %></h3>
+        <img src="<%= Course.Thumbnail %>" alt="<%= Course.Title %>">
+        <p><%= Course.Description.substr(0, 30) %></p>
+        <a href="<%= Course.Path() %>">More</a>
+        <h5>Views <%= Course.ViewCount %></h5>
+    <% }); %>
+</div>
+
+<%- include(ViewPath('Pagination'), { Page: Courses.Page, Pages: Courses.Pages }) %>

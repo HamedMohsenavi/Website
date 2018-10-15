@@ -41,6 +41,27 @@ class HomeController extends Controller
         }
     }
 
+    async CoursesIndex(Request, Response)
+    {
+        let Query = { };
+        let { Search, Type, Order } = Request.query;
+
+        if (Search)
+            Query.Title = new RegExp(Search, 'gi');
+
+        if (Type && Type !== 'All')
+            Query.Type = Type;
+
+        let _Course = Course.find({ ...Query });
+
+        if (Order)
+            _Course.sort({ createdAt: -1 });
+
+        _Course = await _Course.exec();
+
+        Response.render('Home/Courses', { Title: 'Courses Page', Courses: _Course });
+    }
+
     async DownloadEpisode(Request, Response, Next)
     {
         try

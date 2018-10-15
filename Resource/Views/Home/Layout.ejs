@@ -9,7 +9,7 @@
     <%- style %>
 </head>
 <body id="HomeLayout">
-
+    <!-- Authentication -->
     <% if (Request.isAuthenticated()) { %>
         <a href="/Logout">Logout</a>
         <a href="/Settings">Settings</a>
@@ -17,6 +17,12 @@
         <a href="/Authentication/Login">Login</a>
         <a href="/Authentication/Registration">Registration</a>
     <% } %>
+    <hr>
+    <!-- Search Box -->
+    <form action="/Courses" method="GET">
+        <input type="text" name="Search" id="Search">
+        <button type="submit">Search</button>
+    </form>
 
     <%- body %>
 
