@@ -10,6 +10,7 @@ const Controller = require('App/Http/Controllers/Controller');
 
 // Models
 const Course = require('App/Models/Course');
+const Category = require('App/Models/Category');
 
 class CourseController extends Controller
 {
@@ -26,9 +27,11 @@ class CourseController extends Controller
         }
     }
 
-    CreateIndex(Request, Response)
+    async CreateIndex(Request, Response)
     {
-        Response.render('Admin/Courses/Create', { Title: 'Create Course Page' });
+        const _Category = await Category.find({ });
+
+        Response.render('Admin/Courses/Create', { Title: 'Create Course Page', Categories: _Category });
     }
 
     async CreateProcess(Request, Response, Next)
@@ -70,7 +73,9 @@ class CourseController extends Controller
             if (!_Course)
                 this.SetError('Course Not Found', 404);
 
-            Response.render('Admin/Courses/Edit', { Title: 'Edit Course Page', Course: _Course });
+            const _Category = await Category.find({ });
+
+            Response.render('Admin/Courses/Edit', { Title: 'Edit Course Page', Course: _Course, Categories: _Category });
         }
         catch (Error)
         {

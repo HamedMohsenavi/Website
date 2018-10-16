@@ -118,11 +118,11 @@ class AdminValidator
                 {
                     const _Category = await Category.findById(req.params.ID);
 
-                    if (_Category.Name === value)
+                    if (_Category.Slug === value)
                         return;
                 }
 
-                const _Category = await Category.findOne({ Name: value });
+                const _Category = await Category.findOne({ Slug: this.Slug(value) });
 
                 if (_Category)
                     throw new Error('An category with that name is already exists');

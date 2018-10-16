@@ -40,7 +40,7 @@ class CategoryController extends Controller
 
             let { Name, Parent } = Request.body;
 
-            await new Category({ Name, Parent: Parent !== 'None' ? Parent : null }).save();
+            await new Category({ Name, Slug: this.Slug(Name), Parent: Parent !== 'None' ? Parent : null }).save();
 
             return Response.redirect('/Admin/Categories');
         }
@@ -84,7 +84,7 @@ class CategoryController extends Controller
 
             let { Name, Parent } = Request.body;
 
-            await Category.findByIdAndUpdate(Request.params.ID, { $set: { Name, Parent: Parent !== 'None' ? Parent : null } });
+            await Category.findByIdAndUpdate(Request.params.ID, { $set: { Name, Slug: this.Slug(Name), Parent: Parent !== 'None' ? Parent : null } });
 
             return Response.redirect('/Admin/Categories');
         }

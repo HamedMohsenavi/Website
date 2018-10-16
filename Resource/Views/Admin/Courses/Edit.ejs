@@ -8,6 +8,14 @@
         <option value="Vip" <%= GetFormData('Type', Course.Type) === 'Vip' ? 'selected' : '' %>>Vip</option>
         <option value="Cash" <%= GetFormData('Type', Course.Type) === 'Cash' ? 'selected' : '' %>>Cash</option>
     </select> <br>
+    <select name="Categories" id="Categories" multiple>
+        <% Categories.forEach(Category =>{ %>
+            <!-- TODO: FIX ME -->
+            <option value="<%= Category._id %>" <%= Course.Categories.indexOf(Category.id) !== -1 ? 'selected' : '' %>>
+                <%= Category.Name %>
+            </option>
+        <% }); %>
+    </select> <br>
     <textarea name="Description" id="Description" rows="5"><%= GetFormData('Description', Course.Description) %></textarea> <br>
     <input type="file" name="Image" id="Image"> <br>
 

@@ -9,6 +9,7 @@ const Schema = mongoose.Schema;
 const Category = Schema(
 {
     Name: { type: String, required: true },
+    Slug: { type: String, required: true },
     Parent: { type: Schema.Types.ObjectId, ref: 'Category', default: null }
 }, { timestamps: true, toJSON: { virtuals: true } });
 

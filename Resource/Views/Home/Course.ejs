@@ -44,6 +44,24 @@
             <% }) %>
         </tbody>
     </table>
+    <hr>
+
+    <h1>Categories</h1>
+    <ul>
+        <% Categories.forEach(Category => { %>
+            <li>
+                <a href="/Courses?QCategory=<%= Category.Slug %>"><%= Category.Name %></a>
+
+                <% if (Category.Children) { %>
+                    <ul>
+                        <% Category.Children.forEach(Child => { %>
+                            <li><a href="/Courses?QCategory=<%= Child.Slug %>"><%= Child.Name %></a></li>
+                        <% }); %>
+                    </ul>
+                <% } %>
+            </li>
+        <% }) %>
+    </ul>
 
     <hr>
     <h1>Comments</h1>

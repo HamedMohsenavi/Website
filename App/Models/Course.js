@@ -9,6 +9,7 @@ const Schema = mongoose.Schema;
 const Course = Schema(
 {
     Account: { type: Schema.Types.ObjectId, ref: 'Account' },
+    Categories: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
     Title: { type: String, required: true },
     Slug: { type: String, lowercase: true, required: true },
     Type: { type: String, required: true },

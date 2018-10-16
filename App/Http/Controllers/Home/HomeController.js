@@ -12,6 +12,7 @@ const Controller = require('App/Http/Controllers/Controller');
 const Course = require('App/Models/Course');
 const Episode = require('App/Models/Episode');
 const Comment = require('App/Models/Comment');
+const Category = require('App/Models/Category');
 
 class HomeController extends Controller
 {
@@ -27,13 +28,14 @@ class HomeController extends Controller
         try
         {
             const _Course = await Course.findOneAndUpdate({ Slug: Request.params.Slug }, { $inc: { ViewCount: 1 } }).populate([{ path: 'Account', select: 'Name' }, { path: 'Episodes', options: { sort: { EpisodeNumber: 1 } } }, { path: 'Comments', match: { Parent: { $eq: null }, Approved: { $eq: true } }, populate: [{ path: 'Account', select: 'Name' }, { path: 'Children', match: { Approved: { $eq: true } }, populate: [{ path: 'Account', select: 'Name' }] }] }]);
+            const _Category = await Category.find({ Parent: null }).populate('Children').exec();
 
             if (!_Course)
                 this.SetError('Course Not Found', 404);
 
             let _HasAccess = await this.HasAccess(Request, _Course);
 
-            return Response.render('Home/Course', { Title: _Course.Title, Course: _Course, HasAccess: _HasAccess });
+            return Response.render('Home/Course', { Title: _Course.Title, Course: _Course, HasAccess: _HasAccess, Categories: _Category });
         }
         catch (Error)
         {
@@ -44,13 +46,21 @@ class HomeController extends Controller
     async CoursesIndex(Request, Response)
     {
         let Query = { };
-        let { Search, Type, Order } = Request.query;
+        let { Search, Type, Order, QCategory } = Request.query;
 
         if (Search)
             Query.Title = new RegExp(Search, 'gi');
 
         if (Type && Type !== 'All')
             Query.Type = Type;
+
+        if (QCategory && QCategory !== 'All')
+        {
+            const _Category = await Category.findOne({ Slug: QCategory });
+
+            if (_Category)
+                Query.Categories = { $in: [ _Category._id ] };
+        }
 
         let _Course = Course.find({ ...Query });
 
@@ -59,7 +69,9 @@ class HomeController extends Controller
 
         _Course = await _Course.exec();
 
-        Response.render('Home/Courses', { Title: 'Courses Page', Courses: _Course });
+        const _Category = await Category.find({ });
+
+        Response.render('Home/Courses', { Title: 'Courses Page', Courses: _Course, Categories: _Category });
     }
 
     async DownloadEpisode(Request, Response, Next)

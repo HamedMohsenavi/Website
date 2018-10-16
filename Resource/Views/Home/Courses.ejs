@@ -1,4 +1,4 @@
-<% let { Search, Type, Order } = Request.query %>
+<% let { Search, Type, Order, QCategory } = Request.query %>
 
 <form action="/Courses" method="GET">
 <% if (Search) { %>
@@ -11,10 +11,18 @@
 
 <!-- Course Type -->
 <select name="Type" id="Type">
-    <option value="All" <%= Type === 'All' ? 'selected' : '' %>>All</option>
+    <option value="All">All</option>
     <option value="Vip" <%= Type === 'Vip' ? 'selected' : '' %>>Vip</option>
     <option value="Cash" <%= Type === 'Cash' ? 'selected' : '' %>>Cash</option>
     <option value="Free" <%= Type === 'Free' ? 'selected' : '' %>>Free</option>
+</select>
+
+<!-- Categories -->
+<select name="QCategory" id="QCategory">
+    <option value="All">All</option>
+    <% Categories.forEach(Cate => { %>
+        <option value="<%= Cate.Slug %>" <%= Cate.Slug === QCategory ? 'selected' : '' %>><%= Cate.Name %></option>
+    <% }) %>
 </select>
 
 <!-- Order By -->
@@ -26,16 +34,19 @@
 
 <hr>
 
-<h1>Courses</h1>
-
-<div>
-    <% Courses.forEach(Course => { %>
-        <h3><%= Course.Title %></h3>
-        <img src="<%= Course.Thumbnail %>" alt="<%= Course.Title %>">
-        <p><%= Course.Description.substr(0, 30) %></p>
-        <a href="<%= Course.Path() %>">More</a>
-        <h5>Views <%= Course.ViewCount %></h5>
-    <% }); %>
-</div>
+<% if (Courses.length) { %>
+    <h1>Courses</h1>
+    <div>
+        <% Courses.forEach(Course => { %>
+            <h3><%= Course.Title %></h3>
+            <img src="<%= Course.Thumbnail %>" alt="<%= Course.Title %>">
+            <p><%= Course.Description.substr(0, 30) %></p>
+            <a href="<%= Course.Path() %>">More</a>
+            <h5>Views <%= Course.ViewCount %></h5>
+        <% }); %>
+    </div>
+<% } else { %>
+    <h3>Course Not Found!!!</h3>
+<% } %>
 
 <%- include(ViewPath('Pagination'), { Page: Courses.Page, Pages: Courses.Pages }) %>
