@@ -7,6 +7,7 @@ const { check } = require('express-validator/check');
 // Models
 const Course = require('App/Models/Course');
 const Episode = require('App/Models/Episode');
+const Category = require('App/Models/Category');
 
 class AdminValidator
 {
@@ -105,6 +106,28 @@ class AdminValidator
             }),
             check('FileName').not().isEmpty().withMessage('Please enter a valid File Name'),
             check('Description').isLength({ min: 20 }).withMessage('Write 20 characters or more for the description')
+        ];
+    }
+
+    CreateAndEditCategory()
+    {
+        return [
+            check('Name').not().isEmpty().withMessage('Please enter a valid Name').custom(async(value, { req }) =>
+            {
+                if (req.query._Method === 'PUT')
+                {
+                    const _Category = await Category.findById(req.params.ID);
+
+                    if (_Category.Name === value)
+                        return;
+                }
+
+                const _Category = await Category.findOne({ Name: value });
+
+                if (_Category)
+                    throw new Error('An category with that name is already exists');
+            }),
+            check('Parent').not().isEmpty().withMessage('Please enter a valid Parent')
         ];
     }
 

@@ -1,0 +1,12 @@
+<%- include(ViewPath('Errors')) %>
+
+<form action="/Admin/Categories/Edit/<%= Category._id %>?_Method=PUT" method="POST">
+    <input type="text" name="Name" id="Name" placeholder="Category Name" value="<%= GetFormData('Name', Category.Name) %>"> <br>
+    <select name="Parent" id="Parent">
+        <option value="None">Owner</option>
+        <% Categories.forEach(Cate => { %>
+            <option value="<%= Cate._id %>" <%= String(GetFormData('Categories', Category.Parent)) === String(Cate._id) ? 'selected' : '' %>><%= Cate.Name %></option>
+        <% }) %>
+    </select> <br>
+    <button type="submit">Create</button>
+</form>

@@ -1,0 +1,23 @@
+<table>
+    <thead>
+        <th>Category Name</th>
+        <th>Type</th>
+        <th>Settings</th>
+    </thead>
+    <tbody>
+        <% Categories.Docs.forEach(Category => { %>
+            <tr>
+                <td><%= Category.Name %></td>
+                <td><%= Category.Parent ? Category.Parent.Name : 'Owner' %></td>
+                <td>
+                    <form action="/Admin/Categories/<%= Category._id %>?_Method=DELETE" method="POST">
+                        <button type="submit">Delete</button>
+                        <a href="/Admin/Categories/Edit/<%= Category._id %>">Edit</a>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
+
+<%- include(ViewPath('Pagination'), { Page: Categories.Page, Pages: Categories.Pages }) %>
