@@ -25,6 +25,7 @@ const Upload = require('App/Helpers/Upload');
 const Convert = require('App/Http/Middleware/Convert');
 
 Router.get('/', AdminController.Index);
+Router.post('/Upload', Upload.single('upload'), AdminController.UploadImage);
 
 // Courses Routers
 Router.get('/Courses', CourseController.Index);

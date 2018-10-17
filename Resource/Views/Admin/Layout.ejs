@@ -11,7 +11,9 @@
 <body id="AdminLayout">
     <%- body %>
 
+    <script src="/Ckeditor/ckeditor.js"></script>
     <script src="/Javascripts/Scripts.js"></script>
+    <script>CKEDITOR.replace('Description', { filebrowserUploadUrl: '/Admin/Upload' });</script>
     <%- script %>
 </body>
 </html>

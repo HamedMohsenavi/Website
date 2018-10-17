@@ -16,7 +16,7 @@
             </option>
         <% }); %>
     </select> <br>
-    <textarea name="Description" id="Description" rows="5"><%= GetFormData('Description', Course.Description) %></textarea> <br>
+    <textarea name="Description" id="Description" rows="5"><%- GetFormData('Description', Course.Description) %></textarea> <br>
     <input type="file" name="Image" id="Image"> <br>
 
     <% Object.entries(Course.Image).forEach(([Size, Address]) => { %>

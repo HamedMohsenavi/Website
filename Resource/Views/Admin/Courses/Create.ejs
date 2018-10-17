@@ -13,7 +13,7 @@
             <option value="Category._id"><%= Category.Name %></option>
         <% }); %>
     </select> <br>
-    <textarea name="Description" id="Description" rows="5"><%= GetFormData('Description') %></textarea> <br>
+    <textarea name="Description" id="Description"><%- GetFormData('Description') %></textarea> <br>
     <input type="file" name="Image" id="Image"> <br>
     <input type="text" name="Price" id="Price" placeholder="Price" value="<%= GetFormData('Price') %>"> <br>
     <input type="text" name="Tags" id="Tags" placeholder="Tags" value="<%= GetFormData('Tags') %>"> <br>
