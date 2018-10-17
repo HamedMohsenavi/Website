@@ -10,15 +10,23 @@
     <div>
         <% if (Request.isAuthenticated()) { %>
             <% if (Course.Type === 'Vip') { %>
-                <% if (!HasAccess) { %>
-                    <h6>This course is only available to V.I.P members</h6>
+                <% if (!Request.user.IsVip()) { %>
+                    <a href="#">This course is only available to V.I.P members</a>
+                <% } else { %>
+                    <h6>Your account is a V.I.P</h6>
                 <% } %>
             <% } else if (Course.Type === 'Cash') { %>
-                <% if (!HasAccess) { %>
-                    <h4><a href="#">Buy Course</a></h4>
+                <% if (!Request.user.IsPurchased(Course._id)) { %>
+                    <h4>Price: <%= Course.Price %></h4>
+                    <form action="/Course/Payment" method="POST">
+                        <input type="hidden" name="Course" value="<%= Course._id %>">
+                        <button type="submit">Buy Course</button>
+                    </form>
                 <% } else { %>
                     <h4>You have purchased this course</h4>
                 <% } %>
+            <% } else { %>
+                <h3>This course is Free</h3>
             <% } %>
         <% } else {%>
             <h1>You have to login to view this course</h1>
@@ -39,7 +47,7 @@
                     <th><a href=""><%= Episode.EpisodeNumber %></a></th>
                     <td><%= Episode.Title %></td>
                     <td><%= Episode.Time %></td>
-                    <td><a href="<%= Episode.Download(Request.isAuthenticated(), HasAccess) %>">Download</a></td>
+                    <td><a href="<%= Episode.Download(Request) %>">Download</a></td>
                 </tr>
             <% }) %>
         </tbody>

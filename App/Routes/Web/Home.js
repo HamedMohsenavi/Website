@@ -22,6 +22,7 @@ Router.get('/', HomeController.Index);
 Router.get('/Courses', HomeController.CoursesIndex);
 Router.get('/Course/:Slug', HomeController.CourseIndex);
 Router.get('/Course/Download/:ID', HomeController.DownloadEpisode);
+Router.post('/Course/Payment', Redirect.IsNotAuthenticated, HomeController.Payment);
 Router.post('/Comment', Redirect.IsNotAuthenticated, HomeValidator.Comment(), HomeController.Comment);
 
 module.exports = Router;

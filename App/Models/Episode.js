@@ -28,9 +28,9 @@ Episode.methods.Path = function()
     return `${this.Course.Path()}/Episode/${this.EpisodeNumber}`;
 };
 
-Episode.methods.Download = function(IsAuthenticated, HasAccess)
+Episode.methods.Download = function(Request)
 {
-    if (!IsAuthenticated)
+    if (!Request.isAuthenticated())
         return '/Authentication/Login';
 
     let Status = false;
@@ -38,11 +38,11 @@ Episode.methods.Download = function(IsAuthenticated, HasAccess)
     switch (this.Type)
     {
         case 'Vip':
-            Status = HasAccess;
+            Status = Request.user.IsVip();
             break;
 
         case 'Cash':
-            Status = HasAccess;
+            Status = Request.user.IsPurchased(this.Course);
             break;
 
         default:

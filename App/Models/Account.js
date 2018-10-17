@@ -5,8 +5,11 @@ const bcrypt = require('bcrypt');
 // Helpers
 const Unique = require('App/Helpers/Unique');
 
-const Account = mongoose.Schema(
+const Schema = mongoose.Schema;
+
+const Account = Schema(
 {
+    Purchase: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
     Name: { type: String, required: true },
     Admin: { type: Boolean, default: false },
     Email: { type: String, unique: true, required: true },
@@ -49,9 +52,9 @@ Account.methods.IsVip = function()
     return true;
 };
 
-Account.methods.IsPurchased = async function(Model)
+Account.methods.IsPurchased = function(ID)
 {
-    return true;
+    return this.Purchase.indexOf(ID) !== -1;
 };
 
 module.exports = mongoose.model('Account', Account);

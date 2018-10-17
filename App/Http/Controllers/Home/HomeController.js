@@ -33,9 +33,7 @@ class HomeController extends Controller
             if (!_Course)
                 this.SetError('Course Not Found', 404);
 
-            let _HasAccess = await this.HasAccess(Request, _Course);
-
-            return Response.render('Home/Course', { Title: _Course.Title, Course: _Course, HasAccess: _HasAccess, Categories: _Category });
+            return Response.render('Home/Course', { Title: _Course.Title, Course: _Course, Categories: _Category });
         }
         catch (Error)
         {
@@ -128,29 +126,27 @@ class HomeController extends Controller
         }
     }
 
-    async HasAccess(Request, Course)
+    async Payment(Request, Response, Next)
     {
-        let HasAccess = false;
-
-        if (Request.isAuthenticated())
+        try
         {
-            switch (Course.Type)
-            {
-                case 'Vip':
-                    HasAccess = Request.user.IsVip();
-                    break;
+            this.ValidateMongoID(Request.body.Course);
 
-                case 'Cash':
-                    HasAccess = Request.user.IsPurchased(Course);
-                    break;
+            const _Course = await Course.findById(Request.body.Course);
 
-                default:
-                    HasAccess = true;
-                    break;
-            }
+            if (!_Course)
+                return Response.json('Course Not Found');
+
+            if (await Request.user.IsPurchased(_Course))
+                return Response.json('You have purchased this course');
+
+            if (_Course.Price === 0 && (_Course.Type === 'Vip' || _Course.Type === 'Free'))
+                return Response.json('You can\'t buy this course');
         }
-
-        return HasAccess;
+        catch (Error)
+        {
+            Next(Error);
+        }
     }
 
     CheckHash(Request, Episode)
