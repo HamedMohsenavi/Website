@@ -80,25 +80,7 @@ class AdminValidator
                         throw new Error('Please select a valid type');
                 }
             }),
-            check('EpisodeNumber').isNumeric().withMessage('Episode Number cannot be empty').custom(async(value, { req }) =>
-            {
-                value = parseInt(value) || 0;
-
-                if (req.query._Method === 'PUT')
-                {
-                    let _Episode = await Episode.findOne({ EpisodeNumber: value });
-
-                    if (_Episode && String(_Episode._id) !== req.params.ID)
-                        throw new Error('An episode with that number is already exists');
-                }
-                else
-                {
-                    let _Episode = await Episode.findOne({ EpisodeNumber: value });
-
-                    if (_Episode)
-                        throw new Error('An episode with that number is already exists');
-                }
-            }),
+            check('EpisodeNumber').isNumeric().withMessage('Episode Number cannot be empty'),
             check('Time').custom(async value =>
             {
                 if (!value.match('^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$'))

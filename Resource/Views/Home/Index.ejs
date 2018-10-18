@@ -5,7 +5,7 @@
     <% Courses.forEach(Course => { %>
         <h3><%= Course.Title %></h3>
         <img src="<%= Course.Thumbnail %>" alt="<%= Course.Title %>">
-        <p><%= Course.Description.substr(0, 30) %></p>
+        <p><%- Course.Description.substr(0, 30) %></p>
         <a href="<%= Course.Path() %>">More</a>
         <h5>Views <%= Course.ViewCount %></h5>
     <% }); %>
