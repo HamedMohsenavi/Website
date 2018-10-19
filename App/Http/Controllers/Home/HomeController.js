@@ -4,6 +4,7 @@ const fs = require('fs');
 
 // Node Modules
 const bcrypt = require('bcrypt');
+const request = require('request-promise');
 
 // Controllers
 const Controller = require('App/Http/Controllers/Controller');
@@ -13,6 +14,7 @@ const Course = require('App/Models/Course');
 const Episode = require('App/Models/Episode');
 const Comment = require('App/Models/Comment');
 const Category = require('App/Models/Category');
+const Payment = require('App/Models/Payment');
 
 class HomeController extends Controller
 {
@@ -135,13 +137,97 @@ class HomeController extends Controller
             const _Course = await Course.findById(Request.body.Course);
 
             if (!_Course)
-                return Response.json('Course Not Found');
+                this.SetError('Course Not Found', 404);
 
-            if (await Request.user.IsPurchased(_Course))
-                return Response.json('You have purchased this course');
+            if (await Request.user.IsPurchased(_Course._id))
+            {
+                Request.flash('Errors', 'You have purchased this course.');
+                return Response.redirect('back');
+            }
 
             if (_Course.Price === 0 && (_Course.Type === 'Vip' || _Course.Type === 'Free'))
-                return Response.json('You can\'t buy this course');
+            {
+                Request.flash('Errors', 'You can\'t buy this course.');
+                return Response.redirect('back');
+            }
+
+            // Zarinpal
+            let Parameters =
+            {
+                MerchantID: process.env.ZARINPAL_MERCHANT_ID,
+                Amount: _Course.Price,
+                CallbackURL: `${process.env.ZARINPAL_REDIRECT_URI}/Course/Payment/Check`,
+                Description: _Course.Title,
+                Email: Request.user.Email
+            };
+
+            // Request promise
+            let Options =
+            {
+                method: 'POST',
+                uri: 'https://www.zarinpal.com/pg/rest/WebGate/PaymentRequest.json',
+                headers: { 'cache-control': 'no-cache', 'Content-Type': 'application/json' },
+                body: Parameters,
+                json: true
+            };
+
+            request(Options).then(async Data =>
+            {
+                await new Payment({ Account: Request.user._id, Course: _Course._id, Authority: Data.Authority, Price: _Course.Price }).save();
+                Response.redirect(`https://www.zarinpal.com/pg/StartPay/${Data.Authority}`);
+            }).catch(Error => Next(Error));
+        }
+        catch (Error)
+        {
+            Next(Error);
+        }
+    }
+
+    async Check(Request, Response, Next)
+    {
+        try
+        {
+            if (Request.query.Status && Request.query.Status !== 'OK')
+                return Response.json('Payment False');
+
+            const _Payment = await Payment.findOne({ Authority: Request.query.Authority }).populate('Course').exec();
+
+            if (!_Payment.Course)
+                return Response.json('Payment False');
+
+            // Zarinpal
+            let Parameters =
+            {
+                MerchantID: process.env.ZARINPAL_MERCHANT_ID,
+                Amount: _Payment.Course.Price,
+                Authority: Request.query.Authority
+            };
+
+            // Request promise
+            let Options =
+            {
+                method: 'POST',
+                uri: 'https://www.zarinpal.com/pg/rest/WebGate/PaymentVerification.json',
+                headers: { 'cache-control': 'no-cache', 'Content-Type': 'application/json' },
+                body: Parameters,
+                json: true
+            };
+
+            request(Options).then(async Data =>
+            {
+                if (Data.Status === 100)
+                {
+                    _Payment.set({ Payment: true });
+                    Request.user.Purchase.push(_Payment.Course._id);
+
+                    await _Payment.save();
+                    await Request.user.save();
+
+                    Response.redirect(_Payment.Course.Path());
+                }
+                else
+                    Response.json('Payment False');
+            }).catch(Error => Next(Error));
         }
         catch (Error)
         {

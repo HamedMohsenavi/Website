@@ -18,6 +18,7 @@
             <% } else if (Course.Type === 'Cash') { %>
                 <% if (!Request.user.IsPurchased(Course._id)) { %>
                     <h4>Price: <%= Course.Price %></h4>
+                    <%- include(ViewPath('Errors')) %>
                     <form action="/Course/Payment" method="POST">
                         <input type="hidden" name="Course" value="<%= Course._id %>">
                         <button type="submit">Buy Course</button>
