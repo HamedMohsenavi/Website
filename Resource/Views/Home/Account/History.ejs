@@ -1,0 +1,20 @@
+<h3>Payment</h3>
+
+<table>
+    <thead>
+        <th>Amount</th>
+        <th>For</th>
+        <th>Payment status</th>
+    </thead>
+    <tbody>
+        <% Payments.Docs.forEach(Payment => { %>
+            <tr>
+                <td><%= Payment.Price %></td>
+                <td><%= Payment.Vip ? 'V.I.P' : Payment.Course.Title %></td>
+                <td><%= Payment.Payment ? 'Done Successfully' : 'Success failed' %></td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
+
+<%- include(ViewPath('Pagination'), { Page: Payments.Page, Pages: Payments.Pages }) %>
