@@ -7,6 +7,7 @@ const EpisodeController = require('App/Http/Controllers/Admin/EpisodeController'
 const AdminController = require('App/Http/Controllers/Admin/AdminController');
 const CommentController = require('App/Http/Controllers/Admin/CommentController');
 const CategoryController = require('App/Http/Controllers/Admin/CategoryController');
+const AccountController = require('App/Http/Controllers/Admin/AccountController');
 
 // Validator
 const AdminValidator = require('App/Http/Validators/AdminValidator');
@@ -56,5 +57,11 @@ Router.get('/Categories/Create', CategoryController.CreateIndex);
 Router.post('/Categories/Create', AdminValidator.CreateAndEditCategory(), CategoryController.CreateProcess);
 Router.get('/Categories/Edit/:ID', CategoryController.EditIndex);
 Router.put('/Categories/Edit/:ID', AdminValidator.CreateAndEditCategory(), CategoryController.EditProcess);
+
+// Accounts Routers
+Router.get('/Accounts', AccountController.Index);
+Router.delete('/Accounts/:ID', AccountController.Destroy);
+Router.get('/Accounts/Access/:ID', AccountController.Access);
+Router.get('/Accounts/Permission/:ID', AccountController.Index);
 
 module.exports = Router;

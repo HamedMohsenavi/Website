@@ -1,0 +1,30 @@
+<table>
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Created At</th>
+            <th>Settings</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% Accounts.Docs.forEach(Account => { %>
+            <tr>
+                <td><%= Account.Email %></td>
+                <td><%= Account.Name %></td>
+                <td><%= GetDate(Account.createdAt).fromNow() %></td>
+                <td>
+                    <form action="/Admin/Accounts/<%= Account._id %>?_Method=DELETE" method="POST">
+                        <button type="submit">Delete</button>
+                        <a href="/Admin/Accounts/Access/<%= Account._id %>"><%= Account.Admin %></a>
+                        <% if (Account.Admin) { %>
+                            <a href="/Admin/Accounts/Permission/<%= Account._id %>">Permissions</a>
+                        <% } %>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
+
+<%- include(ViewPath('Pagination'), { Page: Accounts.Page, Pages: Accounts.Pages }) %>

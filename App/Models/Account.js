@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 
 // Helpers
 const Unique = require('App/Helpers/Unique');
+const Pagination = require('App/Helpers/Pagination');
 
 const Schema = mongoose.Schema;
 
@@ -15,7 +16,11 @@ const Account = Schema(
     Email: { type: String, unique: true, required: true },
     Password: { type: String, required: true },
     Remember: { type: String, default: null }
-}, { timestamps: true });
+}, { timestamps: true, toJSON: { virtuals: true } });
+
+Account.plugin(Pagination);
+
+Account.virtual('Courses', { ref: 'Course', localField: '_id', foreignField: 'Account' });
 
 Account.pre('save', function(Next)
 {
