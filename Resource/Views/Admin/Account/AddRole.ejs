@@ -1,0 +1,13 @@
+<%- include(ViewPath('Errors')) %>
+
+<form action="/Admin/Accounts/AddRole/<%= Account._id %>?_Method=PUT" method="POST">
+    <input type="text" placeholder="Name & Email" value="<%= Account.Name + ' - ' + Account.Email %>"> <br>
+    <select name="Roles" id="Roles" multiple>
+        <% Roles.forEach(Role => { %>
+            <option value="<%= Role._id %>" <%= GetFormData('Roles' , Account.Roles).indexOf(Role._id) !== -1 ? 'selected' : '' %>>
+                <%= Role.Label %>
+            </option>
+        <% }) %>
+    </select> <br>
+    <button type="submit">Submit</button>
+</form>

@@ -64,7 +64,7 @@ class EpisodeController extends Controller
             if (!_Episode)
                 this.SetError('Episode Not Found', 404);
 
-            Response.render('Admin/Episodes/Edit', { Title: 'Edit Episode Page', Episode: _Episode, Courses: _Course });
+            return Response.render('Admin/Episodes/Edit', { Title: 'Edit Episode Page', Episode: _Episode, Courses: _Course });
         }
         catch (Error)
         {

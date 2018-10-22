@@ -1,8 +1,9 @@
 // Controllers
 const Controller = require('App/Http/Controllers/Controller');
 
-// Model
+// Models
 const Account = require('App/Models/Account');
+const Role = require('App/Models/Role');
 
 class AccountController extends Controller
 {
@@ -33,6 +34,47 @@ class AccountController extends Controller
             await _Account.set({ Admin: !_Account.Admin }).save();
 
             return Response.redirect('back');
+        }
+        catch (Error)
+        {
+            Next(Error);
+        }
+    }
+
+    async AddRoleIndex(Request, Response, Next)
+    {
+        try
+        {
+            this.ValidateMongoID(Request.params.ID);
+
+            const _Account = await Account.findById(Request.params.ID);
+            const _Role = await Role.find({ });
+
+            if (!_Account)
+                this.SetError('Account Not Found', 404);
+
+            Response.render('Admin/Account/AddRole', { Title: 'Add Role Page', Account: _Account, Roles: _Role });
+        }
+        catch (Error)
+        {
+            Next(Error);
+        }
+    }
+
+    async AddRoleProcess(Request, Response, Next)
+    {
+        try
+        {
+            this.ValidateMongoID(Request.params.ID);
+
+            const _Account = await Account.findById(Request.params.ID);
+
+            if (!_Account)
+                this.SetError('Account Not Found', 404);
+
+            await _Account.set({ Roles: Request.body.Roles }).save();
+
+            return Response.redirect('/Admin/Accounts');
         }
         catch (Error)
         {

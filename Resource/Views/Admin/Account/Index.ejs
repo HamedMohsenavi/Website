@@ -18,7 +18,7 @@
                         <button type="submit">Delete</button>
                         <a href="/Admin/Accounts/Access/<%= Account._id %>"><%= Account.Admin %></a>
                         <% if (Account.Admin) { %>
-                            <a href="/Admin/Accounts/Permission/<%= Account._id %>">Permissions</a>
+                            <a href="/Admin/Accounts/AddRole/<%= Account._id %>">Add Role</a>
                         <% } %>
                     </form>
                 </td>

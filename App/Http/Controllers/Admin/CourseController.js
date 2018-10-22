@@ -75,7 +75,7 @@ class CourseController extends Controller
 
             const _Category = await Category.find({ });
 
-            Response.render('Admin/Courses/Edit', { Title: 'Edit Course Page', Course: _Course, Categories: _Category });
+            return Response.render('Admin/Courses/Edit', { Title: 'Edit Course Page', Course: _Course, Categories: _Category });
         }
         catch (Error)
         {

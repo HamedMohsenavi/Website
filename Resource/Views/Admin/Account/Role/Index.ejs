@@ -1,0 +1,25 @@
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Label</th>
+            <th>Settings</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% Roles.Docs.forEach(Role => { %>
+            <tr>
+                <td><%= Role.Name %></td>
+                <td><%= Role.Label %></td>
+                <td>
+                    <form action="/Admin/Accounts/Roles/<%= Role._id %>?_Method=DELETE" method="POST">
+                        <button type="submit">Delete</button>
+                        <a href="/Admin/Accounts/Roles/Edit/<%= Role._id %>">Edit</a>
+                    </form>
+                </td>
+            </tr>
+        <% }); %>
+    </tbody>
+</table>
+
+<%- include(ViewPath('Pagination'), { Page: Roles.Page, Pages: Roles.Pages }) %>

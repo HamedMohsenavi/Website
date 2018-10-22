@@ -11,6 +11,7 @@ const Schema = mongoose.Schema;
 const Account = Schema(
 {
     Purchase: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
+    Roles: [{ type: Schema.Types.ObjectId, ref: 'Role' }],
     Name: { type: String, required: true },
     Admin: { type: Boolean, default: false },
     Email: { type: String, unique: true, required: true },
@@ -60,6 +61,16 @@ Account.methods.IsVip = function()
 Account.methods.IsPurchased = function(ID)
 {
     return this.Purchase.indexOf(ID) !== -1;
+};
+
+Account.methods.HasRole = function(Roles)
+{
+    let Result = Roles.filter(Role =>
+    {
+        return this.Roles.indexOf(Role) > -1;
+    });
+
+    return !!Result.length;
 };
 
 module.exports = mongoose.model('Account', Account);

@@ -1,0 +1,14 @@
+<%- include(ViewPath('Errors')) %>
+
+<form action="/Admin/Accounts/Roles/Edit/<%= Role._id %>?_Method=PUT" method="POST">
+    <input type="text" name="Name" id="Name" placeholder="Name" value="<%= GetFormData('Name', Role.Name) %>"> <br>
+    <input type="text" name="Label" id="Label" placeholder="Label" value="<%= GetFormData('Label', Role.Label) %>"> <br>
+    <select name="Permissions" id="Permissions" multiple>
+        <% Permissions.forEach(Permission => { %>
+            <option value="<%= Permission._id %>" <%= GetFormData('Permissions', Role.Permissions).indexOf(Permission.id) !== -1 ? 'selected' : '' %>>
+                <%= Permission.Label %>
+            </option>
+        <% }); %>
+    </select> <br>
+    <button type="submit">Create</button>
+</form>

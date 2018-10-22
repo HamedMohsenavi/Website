@@ -1,0 +1,25 @@
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Label</th>
+            <th>Settings</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% Permissions.Docs.forEach(Permission => { %>
+            <tr>
+                <td><%= Permission.Name %></td>
+                <td><%= Permission.Label %></td>
+                <td>
+                    <form action="/Admin/Accounts/Permissions/<%= Permission._id %>?_Method=DELETE" method="POST">
+                        <button type="submit">Delete</button>
+                        <a href="/Admin/Accounts/Permissions/Edit/<%= Permission._id %>">Edit</a>
+                    </form>
+                </td>
+            </tr>
+        <% }); %>
+    </tbody>
+</table>
+
+<%- include(ViewPath('Pagination'), { Page: Permissions.Page, Pages: Permissions.Pages }) %>

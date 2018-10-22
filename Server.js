@@ -20,6 +20,7 @@ require('dotenv').config();
 
 // Helpers
 const Helper = require('./App/Helpers/Helper');
+const Gate = require('./App/Helpers/Gate');
 global.Bind = require('./App/Helpers/Bind');
 global.Logger = require('App/Helpers/Logger');
 
@@ -100,6 +101,9 @@ App.use(passport.session());
 
 // Remember Middleware
 App.use(Remember.Handle);
+
+// Connect Roles Configuration
+App.use(Gate.middleware());
 
 // Express Locals
 App.use((Request, Response, Next) =>

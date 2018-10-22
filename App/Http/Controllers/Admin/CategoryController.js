@@ -62,7 +62,7 @@ class CategoryController extends Controller
             if (!_Category)
                 this.SetError('Category Not Found', 404);
 
-            Response.render('Admin/Categories/Edit', { Title: 'Edit Category Page', Category: _Category, Categories });
+            return Response.render('Admin/Categories/Edit', { Title: 'Edit Category Page', Category: _Category, Categories });
         }
         catch (Error)
         {

@@ -6,8 +6,9 @@ const { check } = require('express-validator/check');
 
 // Models
 const Course = require('App/Models/Course');
-const Episode = require('App/Models/Episode');
 const Category = require('App/Models/Category');
+const Permission = require('App/Models/Permission');
+const Role = require('App/Models/Role');
 
 class AdminValidator
 {
@@ -110,6 +111,51 @@ class AdminValidator
                     throw new Error('An category with that name is already exists');
             }),
             check('Parent').not().isEmpty().withMessage('Please enter a valid Parent')
+        ];
+    }
+
+    CreateAndEditPermission()
+    {
+        return [
+            check('Name').not().isEmpty().withMessage('Please enter a valid Name').custom(async(value, { req }) =>
+            {
+                if (req.query._Method === 'PUT')
+                {
+                    const _Permission = await Permission.findById(req.params.ID);
+
+                    if (_Permission.Name === value)
+                        return;
+                }
+
+                const _Permission = await Permission.findOne({ Name: value });
+
+                if (_Permission)
+                    throw new Error('An permission with that name is already exists');
+            }),
+            check('Label').not().isEmpty().withMessage('Please enter a valid label')
+        ];
+    }
+
+    CreateAndEditRole()
+    {
+        return [
+            check('Name').not().isEmpty().withMessage('Please enter a valid Name').custom(async(value, { req }) =>
+            {
+                if (req.query._Method === 'PUT')
+                {
+                    const _Role = await Role.findById(req.params.ID);
+
+                    if (_Role.Name === value)
+                        return;
+                }
+
+                const _Role = await Permission.findOne({ Name: value });
+
+                if (_Role)
+                    throw new Error('An role with that name is already exists');
+            }),
+            check('Label').not().isEmpty().withMessage('Please enter a valid label'),
+            check('Permissions').not().isEmpty().withMessage('Please enter a valid permission')
         ];
     }
 

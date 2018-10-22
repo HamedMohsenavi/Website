@@ -1,0 +1,7 @@
+<%- include(ViewPath('Errors')) %>
+
+<form action="/Admin/Accounts/Permissions/Edit/<%= Permission._id %>?_Method=PUT" method="POST">
+    <input type="text" name="Name" id="Name" placeholder="Name" value="<%= GetFormData('Name', Permission.Name) %>"> <br>
+    <input type="text" name="Label" id="Label" placeholder="Label" value="<%= GetFormData('Label', Permission.Label) %>"> <br>
+    <button type="submit">Edit</button>
+</form>
