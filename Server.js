@@ -13,6 +13,7 @@ const mongoose = require('mongoose');
 const flash = require('connect-flash');
 const passport = require('passport');
 const methodOverride = require('method-override');
+const i18n = require('i18n');
 
 // Initialize Module Path and Environment Variables
 require('app-module-path').addPath(__dirname);
@@ -104,6 +105,17 @@ App.use(Remember.Handle);
 
 // Connect Roles Configuration
 App.use(Gate.middleware());
+
+// I18N Configuration
+i18n.configure(
+{
+    locales: ['en', 'fa'],
+    directory: './Resource/Lang',
+    defaultLocale: 'en',
+    cookie: 'Lang'
+});
+
+App.use(i18n.init);
 
 // Express Locals
 App.use((Request, Response, Next) =>

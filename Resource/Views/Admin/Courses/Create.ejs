@@ -17,5 +17,10 @@
     <input type="file" name="Image" id="Image"> <br>
     <input type="text" name="Price" id="Price" placeholder="Price" value="<%= GetFormData('Price') %>"> <br>
     <input type="text" name="Tags" id="Tags" placeholder="Tags" value="<%= GetFormData('Tags') %>"> <br>
+    <br>
+    <select name="Lang" id="Lang">
+        <option value="fa" <%= GetFormData('Lang') === 'fa' ? 'selected' : '' %>>Persian</option>
+        <option value="en" <%= GetFormData('Lang') === 'en' ? 'selected' : '' %>>English</option>
+    </select>
     <button type="submit">Create</button>
 </form>

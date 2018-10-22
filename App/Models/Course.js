@@ -20,7 +20,8 @@ const Course = Schema(
     Tags: { type: String, required: true },
     Time: { type: String, default: '00:00:00' },
     CommentCount: { type: Number, default: 0 },
-    ViewCount: { type: Number, default: 0 }
+    ViewCount: { type: Number, default: 0 },
+    Lang: { type: String, required: true }
 }, { timestamps: true, toJSON: { virtuals: true } });
 
 Course.plugin(Pagination);

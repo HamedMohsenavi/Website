@@ -20,7 +20,7 @@ class HomeController extends Controller
 {
     async Index(Request, Response)
     {
-        const _Course = await Course.find({}).sort({ createdAt: 1 }).limit(10).exec();
+        const _Course = await Course.find({ Lang: Request.getLocale() }).sort({ createdAt: 1 }).limit(10).exec();
 
         Response.render('Home', { Title: 'Home Page', Courses: _Course });
     }

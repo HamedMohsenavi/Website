@@ -50,9 +50,9 @@ class CourseController extends Controller
             }
 
             let Image = this.ImageResize(Request.file);
-            let { Title, Slug, Type, Description, Price, Tags } = Request.body;
+            let { Title, Slug, Type, Description, Price, Tags, Lang } = Request.body;
 
-            await new Course({ Account: Request.user._id, Title, Slug: this.Slug(Slug), Type, Image, Thumbnail: Image[480], Description, Price, Tags }).save();
+            await new Course({ Account: Request.user._id, Title, Slug: this.Slug(Slug), Type, Image, Thumbnail: Image[480], Description, Price, Tags, Lang }).save();
 
             return Response.redirect('/Admin/Courses');
         }

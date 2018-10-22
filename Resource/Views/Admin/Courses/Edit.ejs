@@ -28,5 +28,11 @@
     <br>
     <input type="text" name="Price" id="Price" placeholder="Price" value="<%= GetFormData('Price', Course.Price) %>"> <br>
     <input type="text" name="Tags" id="Tags" placeholder="Tags" value="<%= GetFormData('Tags', Course.Tags) %>"> <br>
+
+    <br>
+    <select name="Lang" id="Lang">
+        <option value="fa" <%= Course.Lang === 'fa' ? 'selected' : '' %>>Persian</option>
+        <option value="en" <%= Course.Lang === 'en' ? 'selected' : '' %>>English</option>
+    </select>
     <button type="submit">Edit</button>
 </form>
