@@ -16,7 +16,9 @@ const Account = Schema(
     Admin: { type: Boolean, default: false },
     Email: { type: String, unique: true, required: true },
     Password: { type: String, required: true },
-    Remember: { type: String, default: null }
+    Remember: { type: String, default: null },
+    VipTime: { type: String, default: new Date().toISOString() },
+    VipType: { type: String, default: 'Month' }
 }, { timestamps: true, toJSON: { virtuals: true } });
 
 Account.plugin(Pagination);
@@ -55,7 +57,7 @@ Account.methods.SetRemember = function(Response)
 
 Account.methods.IsVip = function()
 {
-    return true;
+    return new Date(this.VipTime) > new Date();
 };
 
 Account.methods.IsPurchased = function(ID)

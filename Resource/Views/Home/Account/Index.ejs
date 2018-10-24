@@ -3,5 +3,9 @@
 <ul>
     <li><%= Request.user.Name %></li>
     <li><%= Request.user.Email %></li>
-    <li>V.I.P: 30Day</li>
+    <% if (Request.user.IsVip()) { %>
+        <li><%= GetDate(Request.user.VipTime).fromNow() %></li>
+    <% } else { %>
+        <li>Your account is not a VIP</li>
+    <% } %>
 </ul>
