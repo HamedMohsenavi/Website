@@ -19,6 +19,9 @@ Router.get('/Logout', (Request, Response) =>
     Response.redirect('/');
 });
 
+// Site Map
+Router.get('/SiteMap.xml', HomeController.SiteMap);
+
 // Home Router
 Router.get('/', HomeController.Index);
 
@@ -42,5 +45,9 @@ Router.get('/Account/History', Redirect.IsNotAuthenticated, AccountController.Hi
 Router.get('/Account/Vip', Redirect.IsNotAuthenticated, AccountController.VipIndex);
 Router.post('/Account/Vip/Payment', Redirect.IsNotAuthenticated, AccountController.Payment);
 Router.get('/Account/Vip/Payment/Check', Redirect.IsNotAuthenticated, AccountController.Check);
+
+// Rss Routers
+Router.get('/Feed/Courses', HomeController.FeedCourses);
+Router.get('/Feed/Episodes', HomeController.FeedEpisodes);
 
 module.exports = Router;

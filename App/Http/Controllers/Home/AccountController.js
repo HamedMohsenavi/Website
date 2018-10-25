@@ -67,7 +67,7 @@ class AccountController extends Controller
             {
                 MerchantID: process.env.ZARINPAL_MERCHANT_ID,
                 Amount: Price,
-                CallbackURL: `${process.env.ZARINPAL_REDIRECT_URI}/Account/Vip/Payment/Check`,
+                CallbackURL: `${process.env.WEBSITE_URL}/Account/Vip/Payment/Check`,
                 Description: 'Buy V.I.P',
                 Email: Request.user.Email
             };

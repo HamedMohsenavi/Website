@@ -5,6 +5,9 @@ const fs = require('fs');
 // Node Modules
 const bcrypt = require('bcrypt');
 const request = require('request-promise');
+const sm = require('sitemap');
+const RSS = require('rss');
+const striptags = require('striptags');
 
 // Controllers
 const Controller = require('App/Http/Controllers/Controller');
@@ -156,7 +159,7 @@ class HomeController extends Controller
             {
                 MerchantID: process.env.ZARINPAL_MERCHANT_ID,
                 Amount: _Course.Price,
-                CallbackURL: `${process.env.ZARINPAL_REDIRECT_URI}/Course/Payment/Check`,
+                CallbackURL: `${process.env.WEBSITE_URL}/Course/Payment/Check`,
                 Description: _Course.Title,
                 Email: Request.user.Email
             };
@@ -245,6 +248,104 @@ class HomeController extends Controller
         let SecretKey = process.env.DOWNLOAD_SECRET_KEY + Episode._id + Request.query.TimeStamps;
 
         return bcrypt.compareSync(SecretKey, Request.query.Mac);
+    }
+
+    async SiteMap(Request, Response, Next)
+    {
+        try
+        {
+            let SiteMap = sm.createSitemap(
+            {
+                hostname: process.env.WEBSITE_URL,
+                cacheTime: 600000
+            });
+
+            SiteMap.add({ url: '/', changefreq: 'daily', priority: 1 });
+            SiteMap.add({ url: '/Courses', changefreq: 'weekly', priority: 1 });
+
+            const Courses = await Course.find({ }).sort({ createdAt: -1 }).exec();
+            const Episodes = await Episode.find({ }).populate('Course').sort({ createdAt: -1 }).exec();
+
+            Courses.forEach(Course => SiteMap.add({ url: Course.Path(), changefreq: 'weekly', priority: 0.8 }));
+            Episodes.forEach(Episode => SiteMap.add({ url: Episode.Path(), changefreq: 'weekly', priority: 0.8 }));
+
+            Response.header('Content-Type', 'application/xml');
+            Response.send(SiteMap.toString());
+        }
+        catch (Error)
+        {
+            Next(Error);
+        }
+    }
+
+    async FeedCourses(Request, Response, Next)
+    {
+        try
+        {
+            let Feed = new RSS(
+            {
+                title: 'Feed Course',
+                description: 'RSS Course',
+                feed_url: `${process.env.WEBSITE_URL}/Feed/Courses`,
+                site_url: process.env.WEBSITE_URL
+            });
+
+            const Courses = await Course.find({ }).populate('Account').sort({ createdAt: -1 }).exec();
+
+            Courses.forEach(Course =>
+            {
+                Feed.item(
+                {
+                    title: Course.Title,
+                    description: striptags(Course.Description.substr(0, 100)),
+                    date: Course.createdAt,
+                    url: process.env.WEBSITE_URL + Course.Path(),
+                    author: Course.Account.Name
+                });
+            });
+
+            Response.header('Content-Type', 'application/xml');
+            Response.send(Feed.xml());
+        }
+        catch (Error)
+        {
+            Next(Error);
+        }
+    }
+
+    async FeedEpisodes(Request, Response, Next)
+    {
+        try
+        {
+            let Feed = new RSS(
+            {
+                title: 'Feed Episode',
+                description: 'RSS Episode',
+                feed_url: `${process.env.WEBSITE_URL}/Feed/Episodes`,
+                site_url: process.env.WEBSITE_URL
+            });
+
+            const Episodes = await Episode.find({ }).populate({ path: 'Course', populate: 'Account' }).sort({ createdAt: -1 }).exec();
+
+            Episodes.forEach(Episode =>
+            {
+                Feed.item(
+                {
+                    title: Episode.Title,
+                    description: striptags(Episode.Description.substr(0, 100)),
+                    date: Episode.createdAt,
+                    url: process.env.WEBSITE_URL + Episode.Path(),
+                    author: Episode.Course.Account.Name
+                });
+            });
+
+            Response.header('Content-Type', 'application/xml');
+            Response.send(Feed.xml());
+        }
+        catch (Error)
+        {
+            Next(Error);
+        }
     }
 }
 

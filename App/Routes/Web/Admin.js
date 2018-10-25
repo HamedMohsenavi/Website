@@ -48,7 +48,7 @@ Router.get('/Episodes/Edit/:ID', EpisodeController.EditIndex);
 Router.put('/Episodes/Edit/:ID', AdminValidator.CreateAndEditEpisode(), EpisodeController.EditProcess);
 
 // Comment Routers
-Router.get('/Comments', Gate.can('ShowComments'), CommentController.Index);
+Router.get('/Comments', CommentController.Index);
 Router.delete('/Comments/:ID', CommentController.Destroy);
 Router.get('/Comments/Approved', CommentController.ApprovedIndex);
 Router.put('/Comments/Approved/:ID', CommentController.ApprovedProcess);
