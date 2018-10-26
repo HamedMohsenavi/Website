@@ -14,6 +14,8 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const methodOverride = require('method-override');
 const i18n = require('i18n');
+const helmet = require('helmet');
+const csurf = require('csurf');
 
 // Initialize Module Path and Environment Variables
 require('app-module-path').addPath(__dirname);
@@ -27,6 +29,7 @@ global.Logger = require('App/Helpers/Logger');
 
 // Middleware
 const Remember = require('./App/Http/Middleware/Remember');
+const ErrorHandler = require('./App/Http/Middleware/ErrorHandler');
 
 // Handle Errors
 process.on('uncaughtException', Error => Logger.Analyze('AppUncaughtException', Error));
@@ -50,6 +53,12 @@ Error =>
     if (Error)
         return Logger.Analyze('DBError', Error);
 });
+
+// Proxy
+App.enable('trust proxy');
+
+// Helmet Configuration
+App.use(helmet());
 
 // Initial Passport
 require('App/Passport/Passport-Local');
@@ -83,6 +92,7 @@ App.use(validator());
 // Express Session Configuration
 App.use(session(
 {
+    name: process.env.SESSION_NAME,
     secret: process.env.SESSION_SECRET_KEY,
     resave: true,
     saveUninitialized: true,
@@ -127,7 +137,8 @@ App.use((Request, Response, Next) =>
 
 // Set Routes
 App.use(require('./App/Routes/Api'));
-App.use(require('./App/Routes/Web'));
+App.use(csurf({ cookie: true }), require('./App/Routes/Web'));
+App.use(ErrorHandler.CSURF);
 
 // Create HTTP Server
 http.createServer(App).listen(process.env.WEBSITE_PORT, () =>

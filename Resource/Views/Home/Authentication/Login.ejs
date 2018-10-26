@@ -1,6 +1,7 @@
 <%- include(ViewPath('Errors')) %>
 
 <form action="/Authentication/Login" method="POST">
+    <input type="hidden" name="_csrf" value="<%= Request.csrfToken() %>">
     <input type="email" name="Email" id="Email" placeholder="Email"> <br>
     <input type="password" name="Password" id="Password" placeholder="Password"> <br>
     <input type="checkbox" name="Remember" id="Remember"> Remember Me <br>

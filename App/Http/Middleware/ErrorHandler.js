@@ -24,6 +24,16 @@ class ErrorHandler
 
         return Response.render(`Errors/${StatusCode}`, { layout: 'Errors/Layout', Title: `Error ${StatusCode}` });
     }
+
+    CSURF(Error, Request, Response, Next)
+    {
+        if (Error.code !== 'EBADCSRFTOKEN')
+            return Next(Error);
+
+        // handle CSRF token errors here
+        Response.status(403);
+        Response.send('form tampered with');
+    }
 }
 
 module.exports = new ErrorHandler();
