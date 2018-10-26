@@ -1,3 +1,4 @@
+// Controller
 const Controller = require('App/Http/Controllers/Controller');
 
 // Models
