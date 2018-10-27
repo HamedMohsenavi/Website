@@ -41,6 +41,7 @@ Router.post('/Comment', Redirect.IsNotAuthenticated, HomeValidator.Comment(), Ho
 
 // Account Routers
 Router.get('/Account', Redirect.IsNotAuthenticated, AccountController.Index);
+Router.get('/Account/Activation/:Token', AccountController.Activation);
 Router.get('/Account/History', Redirect.IsNotAuthenticated, AccountController.History);
 Router.get('/Account/Vip', Redirect.IsNotAuthenticated, AccountController.VipIndex);
 Router.post('/Account/Vip/Payment', Redirect.IsNotAuthenticated, AccountController.Payment);

@@ -14,6 +14,7 @@ const Account = Schema(
     Roles: [{ type: Schema.Types.ObjectId, ref: 'Role' }],
     Name: { type: String, required: true },
     Admin: { type: Boolean, default: false },
+    Active: { type: Boolean, default: false },
     Email: { type: String, unique: true, required: true },
     Password: { type: String, required: true },
     Remember: { type: String, default: null },

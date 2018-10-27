@@ -4,8 +4,9 @@ const request = require('request-promise');
 // Controllers
 const Controller = require('App/Http/Controllers/Controller');
 
-// Model
+// Models
 const Payment = require('App/Models/Payment');
+const Activation = require('App/Models/Activation');
 
 class AccountController extends Controller
 {
@@ -14,6 +15,44 @@ class AccountController extends Controller
         try
         {
             Response.render('Home/Account', { Title: 'Account Page' });
+        }
+        catch (Error)
+        {
+            Next(Error);
+        }
+    }
+
+    async Activation(Request, Response, Next)
+    {
+        try
+        {
+            const _Activation = await Activation.findOne({ Token: Request.params.Token }).populate('Account').exec();
+
+            if (!_Activation)
+            {
+                Request.flash('Error', 'Activation Not Found');
+                return Response.redirect('/');
+            }
+
+            if (_Activation.ExpireTime < new Date())
+            {
+                Request.flash('Error', 'Activation ExpireTime');
+                return Response.redirect('/');
+            }
+
+            if (_Activation.ExpireToken)
+            {
+                Request.flash('Error', 'Activation ExpireToken');
+                return Response.redirect('/');
+            }
+
+            const _Account = _Activation.Account;
+
+            _Account.$set({ Active: true });
+            _Activation.$set({ ExpireToken: true });
+
+            await _Account.save();
+            await _Activation.save();
         }
         catch (Error)
         {

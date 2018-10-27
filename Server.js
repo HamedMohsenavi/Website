@@ -30,6 +30,7 @@ global.Logger = require('App/Helpers/Logger');
 // Middleware
 const Remember = require('./App/Http/Middleware/Remember');
 const ErrorHandler = require('./App/Http/Middleware/ErrorHandler');
+const Active = require('./App/Http/Middleware/Active');
 
 // Handle Errors
 process.on('uncaughtException', Error => Logger.Analyze('AppUncaughtException', Error));
@@ -136,6 +137,7 @@ App.use((Request, Response, Next) =>
 });
 
 // Set Routes
+App.use(Active.Account);
 App.use(require('./App/Routes/Api'));
 App.use(csurf({ cookie: true }), require('./App/Routes/Web'));
 App.use(ErrorHandler.CSURF);
