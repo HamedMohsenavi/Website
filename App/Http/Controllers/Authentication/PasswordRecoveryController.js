@@ -40,7 +40,10 @@ class PasswordRecoveryController extends Controller
             return Response.redirect('back');
         }
 
-        let _Account = await Account.findOneAndUpdate({ Email: _PasswordRecovery.Email }, { $set: { Password: Request.body.Password } });
+        let _Account = await Account.findOne({ Email: _PasswordRecovery.Email });
+
+        _Account.$set({ Password: _Account.HashPassword(Request.body.Password) });
+        await _Account.save();
 
         if (!_Account)
         {

@@ -26,17 +26,10 @@ Account.plugin(Pagination);
 
 Account.virtual('Courses', { ref: 'Course', localField: '_id', foreignField: 'Account' });
 
-Account.pre('save', function(Next)
+Account.methods.HashPassword = function(Password)
 {
-    this.Password = bcrypt.hashSync(this.Password, bcrypt.genSaltSync(15));
-    Next();
-});
-
-Account.pre('findOneAndUpdate', function(Next)
-{
-    this.getUpdate().$set.Password = bcrypt.hashSync(this.getUpdate().$set.Password, bcrypt.genSaltSync(15));
-    Next();
-});
+    return bcrypt.hashSync(Password, bcrypt.genSaltSync(15));
+};
 
 Account.methods.ComparePassword = function(Password)
 {

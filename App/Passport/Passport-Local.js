@@ -38,7 +38,9 @@ passport.use('Registration', new LocalStrategy(
         if (_Account)
             return Done(null, false, Request.flash('Errors', 'That email is taken. Try another.'));
 
-        const AutoLogin = new Account({ ...Request.body });
+        const AutoLogin = new Account({ Name: Request.body.Name, Email });
+
+        AutoLogin.$set({ Password: AutoLogin.HashPassword(Password) });
 
         AutoLogin.save(Error =>
         {

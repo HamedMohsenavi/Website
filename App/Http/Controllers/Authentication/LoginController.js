@@ -20,7 +20,7 @@ class LoginController extends Controller
 
     async Process(Request, Response, Next)
     {
-        // await this.ValidateRecaptcha(Request, Response);
+        await this.ValidateRecaptcha(Request, Response);
 
         let Result = await this.ValidateData(Request);
 
